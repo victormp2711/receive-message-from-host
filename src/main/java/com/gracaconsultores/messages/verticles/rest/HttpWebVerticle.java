@@ -1,4 +1,4 @@
-package com.dbconnect.PostgresProject;
+package com.gracaconsultores.messages.verticles.rest;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
@@ -15,30 +15,22 @@ import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
+
+import static io.vertx.core.impl.ConversionHelper.fromJsonObject;
 
 
 public class HttpWebVerticle extends AbstractVerticle {
 
   private static final Logger log = LoggerFactory.getLogger(HttpWebVerticle.class);
   public static final String MESSAGE_ADDR = "message.domic.account";
+  public static final String MESSAGE_FROM_HOST = "message.from.host";
 
   @Override
   public void start() throws Exception {
     System.out.println("RouterVerticle is deployed");
 
-    ConfigStoreOptions defaultConfig = new ConfigStoreOptions()
-      .setType("file")
-      .setFormat("json")
-      .setConfig(new JsonObject().put("path", "config.json"));
-    ConfigStoreOptions cliConfig = new ConfigStoreOptions()
-      .setType("json")
-      .setConfig(config());
-
-    ConfigRetrieverOptions opts = new ConfigRetrieverOptions()
-      .addStore(defaultConfig)
-      .addStore(cliConfig);
-
-    ConfigRetriever retriever = ConfigRetriever.create(vertx, opts);
+    ConfigRetriever retriever = ConfigRetriever.create(vertx);
 
     log.info("doConfig");
 
@@ -58,24 +50,30 @@ public class HttpWebVerticle extends AbstractVerticle {
     router.post("/api/articles").handler(this::listAllArticles2);
     router.post("/api/message").consumes("application/json").handler(this::sendMessage);
     router.post("/api/message2").consumes("application/json").handler(this::sendMessage2);
-    router.post("/api/accountBalance").consumes("application/json").handler(this::accountBalance);
+    router.post("/api/account").consumes("application/json").handler(this::accountBalance);
     router.post("/api/accountBalanceLib").consumes("application/json").handler(this::accountBalanceLib);
+    router.post("/api/messageFromHost").consumes("application/json").handler(this::messageFromHost);
 
-    retriever.getConfig().onComplete(ar -> {
-      if (ar.failed()) {
-        log.info("Failed to open file configure");
+    retriever.getConfig().onComplete(json -> {
+      if (json.succeeded()){
+        JsonObject env = json.result();
+        Map map = fromJsonObject(env);
+        Map ports = (Map) map.get("http");
+        int port = (int) ports.get("port_qa");
+        createHttpServer2(port, router);
+        log.info("✅ webService is ready" );
       } else {
-        JsonObject env = ar.result();
-        createHttpServer2(env, router);
-        log.info("✅ doConfig properties is ready");
+        log.error("Could not load config enviroment ", json.cause());
       }
+
     });
 
   }
 
-  public void createHttpServer2(JsonObject env, Router router) {
+  public void createHttpServer2(int port, Router router) {
+    log.info("port : " + Integer.valueOf(String.valueOf(port)));
     vertx.createHttpServer().requestHandler(router)
-      .listen(env.getInteger("http.port_qa", 80), result -> {
+      .listen(Integer.valueOf(String.valueOf(port)), result -> {
         if (result.succeeded()) {
           log.info("HTTP server running on port {}", result.result().actualPort());
         } else {
@@ -145,7 +143,6 @@ public class HttpWebVerticle extends AbstractVerticle {
 
   private void accountBalance(RoutingContext context) {
     String uuid = java.util.UUID.randomUUID().toString();
-    //JsonObject jsonObjectIn = (JsonObject) context.body();
     context.request().bodyHandler(bodyHandler -> {
       vertx.eventBus().request("incoming.account.balance", bodyHandler.toJsonObject(), reply -> {
         if (reply.succeeded()) {
@@ -165,6 +162,21 @@ public class HttpWebVerticle extends AbstractVerticle {
       vertx.eventBus().request("incoming.account.balance.lib", bodyHandler.toJsonObject(), reply -> {
         if (reply.succeeded()) {
           log.info("✅ accountBalanceLib success");
+          context.json(reply.result().body());
+        } else {
+          System.out.println("No reply");
+        }
+      });
+    });
+  }
+
+  private void messageFromHost(RoutingContext context) {
+    String uuid = java.util.UUID.randomUUID().toString();
+    //JsonObject jsonObjectIn = (JsonObject) context.body();
+    context.request().bodyHandler(bodyHandler -> {
+      vertx.eventBus().request(MESSAGE_FROM_HOST, bodyHandler.toJsonObject(), reply -> {
+        if (reply.succeeded()) {
+          log.info("✅ messageFromHost success");
           context.json(reply.result().body());
         } else {
           System.out.println("No reply");

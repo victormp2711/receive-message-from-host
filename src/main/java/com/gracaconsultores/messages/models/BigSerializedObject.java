@@ -1,4 +1,4 @@
-package com.dbconnect.PostgresProject;
+package com.gracaconsultores.messages.models;
 
 import lombok.Data;
 

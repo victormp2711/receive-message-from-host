@@ -1,9 +1,9 @@
-package com.dbconnect.PostgresProject;
+package com.gracaconsultores.messages.models;
 
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.MessageCodec;
 
-class BigSerializedObjectCodec implements MessageCodec<BigSerializedObject, BigSerializedObject> {
+public class BigSerializedObjectCodec implements MessageCodec<BigSerializedObject, BigSerializedObject> {
   @Override
   public void encodeToWire(Buffer buffer, BigSerializedObject o) {
     System.out.println("encodeToWire");
