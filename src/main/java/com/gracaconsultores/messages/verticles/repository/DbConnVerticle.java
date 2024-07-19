@@ -130,12 +130,12 @@ public class DbConnVerticle extends AbstractVerticle {
           log.info("seteado el call al cStmt");
           cStmt[0].setString("P_IN_ACCOUNT", jsonIn.getString("account"));
           log.info("seteado el P_IN_ACCOUNT al cStmt");
-          cStmt[0].setString("P_IN_COLLECTOR", jsonIn.getString("collector"));
-          log.info("seteado el P_IN_COLLECTOR al cStmt");
+          /*cStmt[0].setString("P_IN_COLLECTOR", jsonIn.getString("collector"));
+          log.info("seteado el P_IN_COLLECTOR al cStmt");*/
           cStmt[0].registerOutParameter("P_OUT_DATA", OracleTypes.REF_CURSOR);
           log.info("seteado el P_OUT_DATA al cStmt");
-          //cStmt[0].registerOutParameter("P_OUT_STATUS", OracleTypes.VARCHAR);
-          //log.info("seteado el P_OUT_STATUS al cStmt");
+          cStmt[0].registerOutParameter("P_OUT_STATUS", OracleTypes.VARCHAR);
+          log.info("seteado el P_OUT_STATUS al cStmt");
           log.info("antes de ejecutar cStmt");
           cStmt[0].execute();
           log.info("despues de ejecutar cStmt");
