@@ -1,358 +1,464 @@
 package com.gracaconsultores.messages.verticles.repository;
+
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.Promise;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.oracleclient.OracleConnectOptions;
-import io.vertx.oracleclient.OraclePool;
-import io.vertx.sqlclient.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.vertx.ext.web.client.HttpResponse;
+import io.vertx.ext.web.client.WebClient;
+import io.vertx.ext.web.client.WebClientOptions;
+import io.vertx.sqlclient.Row;
+import io.vertx.sqlclient.RowIterator;
+import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.OracleTypes;
 
+import java.io.*;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-import static io.vertx.core.impl.ConversionHelper.fromJsonObject;
+import static io.vertx.core.impl.ConversionHelper.fromObject;
 
-public class DbConnVerticle extends AbstractVerticle{
+@Slf4j
+public class DbConnVerticle extends AbstractVerticle {
 
-  private final Logger log = LoggerFactory.getLogger( DbConnVerticle.class );
-  public static final String TEST_ADDR = "hello.vertx.addr";
+  private static String host;
+  private static int port;
+  private static String serviceName;
+  private static String user;
+  private static String password;
+  private static String dir;
+  private static String dirBkp;
+  private static int bcsaPort;
+  private static String bcsaUrl;
+  private static String bcsaIp;
+  private static List<Map> collectors;
+  public static final String STORE_PROCEDURE_ASSET = "store.procedure.asset.addr";
   public static final String MESSAGE_FROM_HOST = "message.from.host";
-  public static final String DOMIC_CHARGE = "message.domic.charge";
-  public static final String ASSET_CHARGE = "message.asset.charge";
-  public static final String getAccountFromSicDomic = "SELECT ACCOUNT_NUMBER FROM SIC_DEBT_ACCOUNTS WHERE ID_DEBT_COLLECTOR = 3 and DEBT_STATUS = 1 AND ACCOUNT_NUMBER = ?";
-  public static final String getAccountFromSicAsset = "SELECT ACCOUNT_NUMBER, CREDIT_NUMBER, CURRENCY FROM SIC_DEBT_ACCOUNTS WHERE ID_DEBT_COLLECTOR = 2 and DEBT_STATUS = 1 AND ACCOUNT_NUMBER = ?";
-  public static final String getPendingChargesFromDomic = "SELECT\n" +
-    "    NVL(D.ID, 0) AS ID,\n" +
-    "    D.IDHEADER,\n" +
-    "    D.RIF_COBRADOR,\n" +
-    "    D.DIGITO_COBRADOR,\n" +
-    "    NVL(D.MONTO_PENDIENTE_COBRAR, 0) AS MONTO_PENDIENTE_COBRAR,\n" +
-    "    NVL(D.CI_RIF, 'V00000000') AS CI_RIF,\n" +
-    "    NVL(D.DIG_VERIF, '0') AS DIG_VERIF,\n" +
-    "    LPAD(NVL(D.SERIAL_DEBITO_CUENTA, '0'),5,'0') AS SERIAL_DEBITO_CUENTA,\n" +
-    "    D.TIPO_PAGO_ACTUAL,\n" +
-    "    D.CODIGO_EMPRESA,\n" +
-    "    LPAD(NVL(D.REF_DEBITO, '1'),20,'0') AS REF_DEBITO,\n" +
-    "    LPAD(NVL(D.NRO_CTA_1, '0'),20,'0') AS NRO_CTA_1,\n" +
-    "    LPAD(NVL(D.NRO_CTA_2, '0'),20,'0') AS NRO_CTA_2,\n" +
-    "    D.COD_CLIENT,\n" +
-    "    D.STATUS\n" +
-    "FROM\n" +
-    "    EN_PAY_HOME_HEADER H,\n" +
-    "    EN_PAY_HOME_DETAIL D\n" +
-    "WHERE\n" +
-    "    D.IDHEADER = H.ID\n" +
-    "    AND H.STATUS IN ('LT005','LT004')\n" +
-    "    AND D.STATUS IN ('RG004','RG005','RG007','RG008')\n" +
-    "    AND D.FORMA_DE_PAGO = '01'\n" +
-    "    AND D.FLAG_PROCESO_HOST = '00'\n" +
-    "    AND D.MONTO_PENDIENTE_COBRAR > 0\n" +
-    "    AND TRUNC(SYSDATE) >= D.FECHA_VALOR\n" +
-    "    AND TRUNC(SYSDATE) <= D.FECHA_CULMINACION\n" +
-    "    AND LPAD(NVL(D.NRO_CTA_1, '0'),20,'0') = ?";
+  public static final String STORE_PROCEDURE_DOMIC = "store.procedure.domic.addr";
+  public static final SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
 
-  private static String hostDomic;
-  private static int portDomic;
-  private static String serviceNameDomic;
-  private static String userDomic;
-  private static String passwordDomic;
+  @Override
+  public void start(Promise<Void> start) {
+    //vertx.setPeriodic(1000 * 60 * 60, (l) -> { -- cada hora
+    ConfigRetriever retriever = ConfigRetriever.create(vertx);
+    retriever.getConfig().onComplete(json -> {
+      if (json.succeeded()){
+        JsonObject env = json.result();
+        //log.info("result : " + env);
+        Map map = fromJsonObject(env);
+        //log.info("map : " + map.toString());
+        Map ds = (Map) map.get("db_sic");
+        //log.info("ports : " +  ports.get("port_qa"));
+        host = (String) ds.get("host");
+        port = Integer.valueOf((String) ds.get("port"));
+        serviceName = (String) ds.get("service_name");
+        user = (String) ds.get("user");
+        password = (String) ds.get("password");
+        /* obteniendo rutas de las propiedades */
+        Map ds2 = (Map) map.get("scheduler");
+        //log.info("ports : " +  ports.get("port_qa"));
+        dir = (String) ds.get("dir");
+        dirBkp = (String) ds.get("dirBkp");
 
-  private static String hostSic;
-  private static int portSic;
-  private static String serviceNameSic;
-  private static String userSic;
-  private static String passwordSic;
-
-	public void start() {
-      configureEventBusConsumers();
-      connectionDbDomic();
-      connectionDbSic();
+        Map ds3 = (Map) map.get("bcsa");
+        bcsaUrl = (String) ds3.get("url");
+        bcsaIp = (String) ds3.get("ip");
+        bcsaPort = (int) ds3.get("port");
+        /* obteniendo las propiedades de los cobradores */
+        collectors = (List<Map>) map.get("collectors");
+        log.info("collectors : " + collectors);
+        //log.info("collectors 0  : " + collectors.get(0));
+        //log.info("collectors 1 : " + collectors.get(1).get("url"));
+      }
+    });
+    log.info("executing process storeProcesureAsset ");
+    eventBusConsumersAccount();
   }
 
-  Future<Void> connectionDbDomic() {
-    return Future.<Void>future(promise -> {
-      ConfigRetriever retriever = ConfigRetriever.create(vertx);
-      retriever.getConfig().onComplete(json -> {
-        if (json.succeeded()){
-          JsonObject env = json.result();
-          //log.info("result : " + env);
-          Map map = fromJsonObject(env);
-          //log.info("map : " + map.toString());
-          Map ds = (Map) map.get("db_domic");
-          //log.info("ports : " +  ports.get("port_qa"));
-          hostDomic = (String) ds.get("host");
-          portDomic = Integer.valueOf((String) ds.get("port"));
-          serviceNameDomic = (String) ds.get("service_name");
-          userDomic = (String) ds.get("user");
-          passwordDomic = (String) ds.get("password");
-          /*OracleConnectOptions  connectOptions = new OracleConnectOptions()
-            .setPort(portDomic)
-            .setHost(hostDomic)
-            .setServiceName(serviceNameDomic)
-            .setUser(userDomic)
-            .setPassword(passwordDomic);
-
-          PoolOptions poolOptions = new PoolOptions()
-            .setMaxSize(1);
-          OraclePool client = OraclePool.pool(vertx, connectOptions, poolOptions);
-          client.getConnection(ar -> {
-            if (ar.succeeded()) {
-              log.info("connection db domic ok");
-              ar.result().query("select sysdate from dual");
-            } else {
-              log.error("Could not connect to db domic by ", ar.cause());
-            }
-          });
-          client.close();*/
-          log.info("✅ connection to domic database is ready");
-        } else {
-          log.error("🔥Could not load config enviroment ", json.cause());
-        }
-
-      });
-      //vertx.eventBus().consumer(TEST_ADDR).handler(this::test);
+  void eventBusConsumersAccount() {
+    Future.<Void>future(promise -> {
+      vertx.eventBus().consumer(MESSAGE_FROM_HOST).handler(this::getAccountFromCollect);
     });
   }
 
-  Future<Void> connectionDbSic() {
-    return Future.<Void>future(promise -> {
-      ConfigRetriever retriever = ConfigRetriever.create(vertx);
-      retriever.getConfig().onComplete(json -> {
-        if (json.succeeded()){
-          JsonObject env = json.result();
-          //log.info("result : " + env);
-          Map map = fromJsonObject(env);
-          //log.info("map : " + map.toString());
-          Map ds = (Map) map.get("db_sic");
-          //log.info("ports : " +  ports.get("port_qa"));
-          hostSic = (String) ds.get("host");
-          portSic = Integer.valueOf((String) ds.get("port"));
-          serviceNameSic = (String) ds.get("service_name");
-          userSic = (String) ds.get("user");
-          passwordSic = (String) ds.get("password");
-          /*OracleConnectOptions  connectOptions = new OracleConnectOptions()
-            .setPort(portSic)
-            .setHost(hostSic)
-            .setServiceName(serviceNameSic)
-            .setUser(userSic)
-            .setPassword(passwordSic);
-
-          PoolOptions poolOptions = new PoolOptions()
-            .setMaxSize(1);
-          OraclePool client = OraclePool.pool(vertx, connectOptions, poolOptions);
-          client.getConnection(ar -> {
-            if (ar.succeeded()) {
-              log.info("connection db sic ok");
-              ar.result().query("select sysdate from dual");
-            } else {
-              log.error("Could not connect to db sic by ", ar.cause());
-            }
-          });
-          client.close();*/
-          log.info("✅ connection to sic database is ready");
-        } else {
-          log.error("🔥Could not load config enviroment ", json.cause());
-        }
-
-      });
-      //vertx.eventBus().consumer(TEST_ADDR).handler(this::test);
+  public static Map<String, Object> fromJsonObject(JsonObject json) {
+    if (json == null) {
+      return null;
+    }
+    Map<String, Object> map = new LinkedHashMap<>(json.getMap());
+    map.entrySet().forEach(entry -> {
+      entry.setValue(fromObject(entry.getValue()));
     });
+    return map;
   }
-    private OraclePool getPoolDomic(){
-      OracleConnectOptions  connectOptions = new OracleConnectOptions()
-        .setPort(portDomic)
-        .setHost(hostDomic)
-        .setServiceName(serviceNameDomic)
-        .setUser(userDomic)
-        .setPassword(passwordDomic);
-
-      // Pool options
-      PoolOptions poolOptions = new PoolOptions()
-        .setMaxSize(15);
-
-      // Create the client pool
-      OraclePool client = OraclePool.pool(vertx, connectOptions, poolOptions);
-      return  client;
+  private Connection getConnectionSic() {
+    //Connection conn = null;
+    try {
+      Class.forName("oracle.jdbc.OracleDriver");
+      String connection = "jdbc:oracle:thin:@//" + host + ":" + port + "/" + serviceName;
+      log.info("connection : " + connection);
+      return DriverManager.getConnection(
+        "jdbc:oracle:thin:@" + host + ":" + port + "/" + serviceName,
+        user, password);
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+      return null;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
     }
+  }
 
-    private OraclePool getPoolSic(){
-      OracleConnectOptions  connectOptions = new OracleConnectOptions()
-        .setPort(portSic)
-        .setHost(hostSic)
-        .setServiceName(serviceNameSic)
-        .setUser(userSic)
-        .setPassword(passwordSic);
+  private Future<?> getAccountFromCollect(Message<Object> msg) {
+    log.info("Begin getAccountFromCollect : " + msg.body());
+    JsonObject jsonIn = (JsonObject) msg.body();
+    final CallableStatement[] cStmt = {null};
+    return Future.<Void>future(promise -> {
+      Connection conn = getConnectionSic();
+      try {
+        if (conn != null) {
+          log.info("- llamando al store procedure");
+          cStmt[0] = conn.prepareCall("{CALL GIOM.PKG_SIC_DEBT_ACCOUNTS_COLLECTOR.GET_ACCOUNT_FOR_ALL_COLLECTORS(?, ?, ?)}");
+          log.info("seteado el call al cStmt");
+          cStmt[0].setString("P_IN_ACCOUNT", jsonIn.getString("account"));
+          log.info("seteado el P_IN_ACCOUNT al cStmt");
+          cStmt[0].setString("P_IN_COLLECTOR", jsonIn.getString("collector"));
+          log.info("seteado el P_IN_COLLECTOR al cStmt");
+          cStmt[0].registerOutParameter("P_OUT_DATA", OracleTypes.REF_CURSOR);
+          log.info("seteado el P_OUT_DATA al cStmt");
+          //cStmt[0].registerOutParameter("P_OUT_STATUS", OracleTypes.VARCHAR);
+          //log.info("seteado el P_OUT_STATUS al cStmt");
+          log.info("antes de ejecutar cStmt");
+          cStmt[0].execute();
+          log.info("despues de ejecutar cStmt");
+          String status = null;
+          status = (String) cStmt[0].getObject("P_OUT_STATUS");
+          log.info("status: " + status);
+          final ResultSet rs = (ResultSet) cStmt[0].getObject("P_OUT_DATA");
 
-      // Pool options
-      PoolOptions poolOptions = new PoolOptions()
-        .setMaxSize(15);
-
-      // Create the client pool
-      OraclePool client = OraclePool.pool(vertx, connectOptions, poolOptions);
-      return  client;
-    }
-
-    void configureEventBusConsumers() {
-      Future.<Void>future(promise -> {
-        vertx.eventBus().consumer("incoming.message.articles", this::listAllArticles2);
-        vertx.eventBus().consumer(MESSAGE_FROM_HOST).handler(this::processMessage);
-      });
-    }
-
-  private <T> void  listAllArticles2(io.vertx.core.eventbus.Message<Object> msg) {
-    log.info("Listing all articles2");
-    getPoolDomic().query("SELECT * FROM articles").execute()
-      .onComplete(rs -> {
-        if (rs.succeeded()) {
-          JsonArray ar = new JsonArray();
-          RowIterator<Row> it = rs.result().iterator();
-          while (it.hasNext()) {
-            Row row = it.next();
-            JsonObject o = new JsonObject();
-            for (int i = 0; i < row.size(); i++) {
-              o.put(row.getColumnName(i), row.getValue(i));
-            }
-            ar.add(o);
+          JsonArray arrayJson = new JsonArray();
+          while (rs.next()) {
+            String accountNumber  = rs.getString("ACCOUNT_NUMBER");
+            int idCollector       = rs.getInt("ID_DEBT_COLLECTOR");
+            String priority       = rs.getString("PRIORITY");
+            JsonObject obj = new JsonObject();
+            obj.put("accountNumber", accountNumber);
+            obj.put("idCollector", idCollector);
+            obj.put("priority", priority);
+            arrayJson.add(obj);
           }
-          log.info("resultado : " + ar.toString());
-          msg.reply(ar);
-        } else {
-          System.out.println("Failure: " + rs.cause().getMessage());
-          msg.fail(500, rs.cause().getLocalizedMessage());
-        }
-        getPoolDomic().close();
-      }).onFailure(h -> {getPoolDomic().close();});
-  }
+          conn.close();
+          log.info("- resultado de datos: " + arrayJson.toString());
 
-  private <T> void processMessage(Message<T> tMessage) {
-    log.info("Begin processMessage : " + tMessage.body());
-    JsonObject bodyIn = (JsonObject) tMessage.body();
-    //Future.all(getAccountFromSicDomic(bodyIn), getAccountFromSicAsset(bodyIn)).onComplete(ar -> {
-    Future.all(getAccountFromSicDomic(bodyIn), getAccountFromSicAsset(bodyIn)).onComplete(ar -> {
-      if (ar.succeeded()) {
-          log.info("resultado : " + ar.toString());
-        tMessage.reply(new JsonObject()
-          .put("code", 1000)
-          .put("message", "success")
-          .put("status", 200));
-      } else {
-          log.info("Failure: " + ar.cause().getMessage());
-        tMessage.reply(new JsonObject()
-          .put("code", 1020)
-          .put("message", "error" + ar.cause().getMessage())
-          .put("status", 200));
+          arrayJson.forEach(item -> {
+            JsonObject obj = (JsonObject) item;
+            switch (obj.getInteger("idCollector")) {
+              case 2 ->   // procesar cobranza de Activo
+                assetCharge(obj);
+
+                    /*case 3:   // procesar cobranza de domiciliacion y otros productos
+                      genericCharge(new JsonObject()
+                      .put("account", accountNumber));
+                      break;*/
+              default -> {
+                log.info("procesando default process");
+                genericCharge(obj);  // procesar cobranza de domiciliacion y otros productos
+              }
+            }
+          });
+          msg.reply(new JsonObject()
+            .put("code", 1000)
+            .put("message", "success")
+            .put("status", 200));
+        } else {
+          msg.reply(new JsonObject()
+            .put("code", 1020)
+            .put("message", "error : " + "connecxion retornada es null")
+            .put("status", 200));
+        }
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      } finally{
+        try {
+          if(cStmt[0] !=null) cStmt[0].close(); //close CallableStatement
+          if(conn!=null) conn.close(); // close connection
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
       }
     });
   }
 
-  private Future<?> getAccountFromSicDomic(JsonObject jsonIn) {
-    log.info("getAccountFromSicDomic : " + jsonIn.toString());
-    return getPoolSic().preparedQuery(getAccountFromSicDomic).execute(Tuple.of(jsonIn.getString("account")))
-      .onComplete(rs -> {
-        if (rs.succeeded()) {
-          RowSet<Row> result = rs.result();
-          if (result.size() > 0) {
-            RowIterator<Row> it = rs.result().iterator();
-            Row row = it.next();
-            JsonObject o = new JsonObject();
-            o.put(row.getColumnName(0), row.getValue(0));
-            log.info("resultado : " + o.toString());
-            getPoolSic().close();
-            log.info("query domic : " + getPendingChargesFromDomic);
-            getPoolDomic().preparedQuery(getPendingChargesFromDomic).execute(Tuple.of(jsonIn.getString("account")))
-              .onComplete(rs2 -> {
-                if (rs2.succeeded()) {
-                  RowSet<Row> result2 = rs2.result();
-                  if (result2.size() > 0) {
-                    JsonArray arr = new JsonArray();
-                    RowIterator<Row> it2 = rs2.result().iterator();
-                    while (it2.hasNext()) {
-                      Row row2 = it2.next();
-                      JsonObject o2 = new JsonObject();
-                      for (int i = 0; i < row2.size(); i++) {
-                        o2.put(row2.getColumnName(i), row2.getValue(i));
-                      }
-                      arr.add(o2);
-                    }
-                    getPoolDomic().close();
-                    log.info("pending charges from domic: " + arr.toString());
-                    arr.stream().forEach(rowArr ->{
-                      vertx.eventBus().request(DOMIC_CHARGE, rowArr, reply -> {
-                        if (reply.succeeded()) {
-                          log.info("✅ messageFromHost success");
-                          reply.result().body();
-                        } else {
-                          log.info("No reply");
-                        }
-                      });
-                    });
-                  } else {
-                    log.info("records not found in for domic");
-                  }
-                } else {
-                  log.error("Failure rs2: " + rs2.cause().getMessage());
-                  getPoolDomic().close();
-                  rs2.cause().printStackTrace();
-                }
-              });
-          } else {
-            log.info("account no found in sic for domic");
+  private Future<?> getAccountFromCollect1(Message<Object> msg) {
+    log.info("Begin getAccountFromCollect : " + msg.body());
+    JsonObject jsonIn = (JsonObject) msg.body();
+    final CallableStatement[] cStmt = {null};
+    return Future.<Void>future(promise -> {
+      Connection conn = getConnectionSic();
+      try {
+        if (conn != null) {
+          log.info("- llamando al store procedure");
+          cStmt[0] = conn.prepareCall("{CALL GIOM.PKG_SIC_DEBT_ACCOUNTS_COLLECTOR.GET_ACCOUNT_FOR_COLLECTORS(?, ?, ?)}");
+          log.info("seteado el call al cStmt");
+          cStmt[0].setString("P_IN_ACCOUNT", jsonIn.getString("account"));
+          log.info("seteado el P_IN_ACCOUNT al cStmt");
+          cStmt[0].registerOutParameter("P_OUT_DATA", OracleTypes.REF_CURSOR);
+          log.info("seteado el P_OUT_DATA al cStmt");
+          cStmt[0].registerOutParameter("P_OUT_STATUS", OracleTypes.VARCHAR);
+          log.info("seteado el P_OUT_STATUS al cStmt");
+          log.info("antes de ejecutar cStmt");
+          cStmt[0].execute();
+          log.info("despues de ejecutar cStmt");
+          String status = null;
+          status = (String) cStmt[0].getObject("P_OUT_STATUS");
+          log.info("status: " + status);
+          final ResultSet rs = (ResultSet) cStmt[0].getObject("P_OUT_DATA");
+
+          JsonArray arrayJson = new JsonArray();
+          while (rs.next()) {
+            String accountNumber  = rs.getString("ACCOUNT_NUMBER");
+            int idCollector       = rs.getInt("ID_DEBT_COLLECTOR");
+            String priority       = rs.getString("PRIORITY");
+            JsonObject obj = new JsonObject();
+            obj.put("accountNumber", accountNumber);
+            obj.put("idCollector", idCollector);
+            obj.put("priority", priority);
+            arrayJson.add(obj);
           }
-        } else {
-          log.error("Failure rs : " + rs.cause().getMessage());
-          rs.cause().printStackTrace();
-        }
-        getPoolSic().close();
-        log.info("End  getAccountFromSicDomic");
-      }).onFailure(h -> {
-            getPoolDomic().close();
+          conn.close();
+          log.info("- resultado de datos: " + arrayJson.toString());
+
+          arrayJson.forEach(item -> {
+            JsonObject obj = (JsonObject) item;
+            switch (obj.getInteger("idCollector")) {
+              case 2 ->   // procesar cobranza de Activo
+                assetCharge(obj);
+
+                    /*case 3:   // procesar cobranza de domiciliacion y otros productos
+                      genericCharge(new JsonObject()
+                      .put("account", accountNumber));
+                      break;*/
+              default -> {
+                log.info("procesando default process");
+                genericCharge(obj);  // procesar cobranza de domiciliacion y otros productos
+              }
+            }
           });
+          msg.reply(new JsonObject()
+            .put("code", 1000)
+            .put("message", "success")
+            .put("status", 200));
+        } else {
+          msg.reply(new JsonObject()
+            .put("code", 1020)
+            .put("message", "error : " + "connecxion retornada es null")
+            .put("status", 200));
+        }
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      } finally{
+        try {
+          if(cStmt[0] !=null) cStmt[0].close(); //close CallableStatement
+          if(conn!=null) conn.close(); // close connection
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+    });
   }
 
-  private Future<?> getAccountFromSicAsset(JsonObject jsonIn) {
-    log.info("Begin getAccountFromSicAsset : " + jsonIn);
-    return getPoolSic().preparedQuery(getAccountFromSicAsset).execute(Tuple.of(jsonIn.getString("account")))
-      .onComplete(rs -> {
-        if (rs.succeeded()) {
-          log.info("succeeded account for asset");
-          RowSet<Row> result = rs.result();
-          if (result.size() > 0) {
-            log.info("recodrs for account " + jsonIn.getString("account") + " of asset is " + result.size());
-            JsonArray arr = new JsonArray();
-            RowIterator<Row> it = rs.result().iterator();
-            while (it.hasNext()) {
-              Row row = it.next();
-              JsonObject o = new JsonObject();
-              for (int i = 0; i < row.size(); i++) {
-                o.put(row.getColumnName(i), row.getValue(i));
-              }
-              arr.add(o);
-            }
-            getPoolSic().close();
-            log.info("processing charge to asset : " + arr.toString());
-            arr.stream().forEach(rowArr ->{
-              vertx.eventBus().request(ASSET_CHARGE, rowArr, reply -> {
-                if (reply.succeeded()) {
-                  log.info("✅ messageFromHost success");
-                  reply.result().body();
+  private Future<JsonObject> getAccountsByCollector(JsonObject jsonIn) {
+    log.info("🚀 getAccountsByCollector : " + jsonIn);
+    final CallableStatement[] cStmt = {null};
+    return Future.<JsonObject>future(promise -> {
+      Connection conn = getConnectionSic();
+      try {
+        if (conn != null) {
+          cStmt[0] = conn.prepareCall("{CALL GIOM.PKG_SIC_DEBT_ACCOUNTS_COLLECTOR.GET_ACCOUNT_BY_COLLECTOR(?, ?, ?, ?)}");
+          cStmt[0].setString("P_IN_ACCOUNT", jsonIn.getString("account"));
+          cStmt[0].setInt("P_IN_COLLECTOR", jsonIn.getInteger("collector"));
+          cStmt[0].registerOutParameter("P_OUT_DATA", OracleTypes.REF_CURSOR);
+          cStmt[0].registerOutParameter("P_OUT_STATUS", OracleTypes.VARCHAR);
+          cStmt[0].execute();
+          String status = null;
+          status = (String) cStmt[0].getObject("P_OUT_STATUS");
+          log.info("status: " + status);
+          final ResultSet rs = (ResultSet) cStmt[0].getObject("P_OUT_DATA");
+          rs.next();
+          JsonArray arrayJson = new JsonArray();
+          JsonObject obj = new JsonObject();
+          obj.put("accountNumber", rs.getString("ACCOUNT_NUMBER"));
+          obj.put("creditNumber", rs.getInt("CREDIT_NUMBER"));
+          obj.put("currency", rs.getString("CURRENCY"));
+          conn.close();
+        } else {
+          log.info("message", "error : " + "connecxion retornada es null");
+        }
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      } finally{
+        try {
+          if(cStmt[0] !=null) cStmt[0].close(); //close CallableStatement
+          if(conn!=null) conn.close(); // close connection
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+    });
+  }
+
+  private <T> void genericCharge(JsonObject bodyIn) {
+    log.info("🚀 genericCharge : " + bodyIn);
+    WebClient client = WebClient.create(vertx);
+    accountBalance(bodyIn).onComplete(bcsa -> {
+      if(bcsa.succeeded()) {
+        JsonObject bcsaR = bcsa.result().bodyAsJsonObject();
+        log.info("bcsac asset response : " + bcsaR);
+        log.info("bcsac code  : " + bcsaR.getInteger("code"));
+        if(bcsaR.getInteger("code") == 1000) {
+          JsonObject jsonMap = bcsaR.getJsonObject("data").getJsonObject("BGMCSA1");
+          log.info("jsonMap : " + jsonMap);
+          log.info("building asset  charge U087 and comparing amount balance : " + jsonMap.getFloat("ppalSdoFinal"));
+          if (jsonMap.getFloat("ppalSdoFinal") > 0.0) {
+            log.info("sending json to charge to collector : " + bodyIn.getString("idCollector") + " : " + bodyIn);
+            bodyIn.put("url", collectors.get(bodyIn.getInteger("idCollector")).get("url"));
+            bodyIn.put("ip", collectors.get(bodyIn.getInteger("idCollector")).get("ip"));
+            bodyIn.put("port", collectors.get(bodyIn.getInteger("idCollector")).get("port"));
+            chargeGeneric(bodyIn).onComplete(charge ->{
+              if (charge.succeeded()) {
+                JsonObject response = charge.result().bodyAsJsonObject();
+                log.info("response : " + response);
+                if(response.getInteger("status") == 1000){
+                  log.info("✅ return service with HTTP response with status of collector " + bodyIn.getInteger("idCollector")  + response.getString("message"));
                 } else {
-                  log.info("No reply by : " + reply.cause());
+                  log.info("no se realiza la operacion de cobranza activos por : " + response.getString("message"));
                 }
-              });
+              } else {
+                charge.cause().printStackTrace();
+                log.info("no se realiza la operacion de cobranza activos por : " + charge.cause().getMessage());
+              }
             });
           } else {
-            log.info("records not found for asset by account: " + jsonIn.getString("account"));
-            log.info("End  getAccountFromSicAsset");
-            getPoolDomic().close();
+            log.info("no se envia la operacion de cobranza por falta de saldo");
           }
         } else {
-          System.out.println("Failure: " + rs.cause().getMessage());
+          log.info("no se envia la operacion de cobranza por : " + bcsaR.getString("message"));
         }
-        log.info("End  getAccountFromSicAsset");
-        getPoolSic().close();
-      }).onFailure(h -> {getPoolDomic().close();});
+      } else {
+        log.info("no se envia la operacion de cobranza por falla : " + bcsa.cause());
+      }
+    });
+  }
+
+  private <T> void assetCharge(JsonObject bodyIn) {
+    log.info("🚀 assetCharge : " + bodyIn);
+    WebClient client = WebClient.create(vertx);
+    JsonObject bodyInCollector = new JsonObject()
+      .put("account", bodyIn.getValue("accountNumber"))
+      .put("collector", "idCollector");
+    getAccountsByCollector(bodyInCollector).onComplete(ar ->{
+        if(ar.succeeded()) {
+          JsonObject jsonResponse = ar.result();
+          log.info("se obtiene datos complementarios para la U087: " + jsonResponse);
+          JsonObject bodyInCharge = new JsonObject();
+          bodyInCharge.put("contratoCredito",   jsonResponse.getString("CREDIT_NUMBER"));
+          bodyInCharge.put("codDivisa",         jsonResponse.getString("CURRENCY"));
+          bodyInCharge.put("recibos",           "");
+          bodyInCharge.put("importe",           0.00);
+          bodyInCharge.put("fechaValor",        sdf2.format(new Date()));
+          bodyInCharge.put("indFormaDePago",    "1");
+          bodyInCharge.put("cccCargo",          bodyIn.getString("ACCOUNT_NUMBER"));
+          bodyInCharge.put("numeroDeCheque",    "");
+          bodyInCharge.put("importeDelCheque",  "");
+          bodyInCharge.put("tasaDeMora",        "");
+          bodyInCharge.put("importeDeMora",     "");
+          bodyInCharge.put("nioDeCobroLinea",   "");
+          bodyInCharge.put("indicadorDeCobro",  "");
+          bodyInCharge.put("user",              "BDVN001");
+          log.info("sending json to asset charge pic U087 : " + bodyInCharge);
+          assetChargePic(bodyIn, bodyInCharge).onComplete(charge ->{
+            if (charge.succeeded()) {
+              JsonObject responseU087 = charge.result().bodyAsJsonObject();
+              log.info("responseU087 : " + responseU087);
+              if(responseU087.getInteger("status") == 1000){
+                log.info("✅ return pic with HTTP response with status " + responseU087.getString("message"));
+              } else {
+                log.info("no se realiza la operacion de cobranza activos por : " + responseU087.getString("message"));
+              }
+            } else {
+              log.info("error al realiza la operacion de cobranza activos por : " + charge.cause());
+            }
+          });
+        } else {
+          log.info("ne se pudo obtener datos complementarios para la U087: " + bodyInCollector);
+        }
+    }).onFailure(f -> log.error("error al realiza la operacion de getAccountsByCollector con : " + bodyInCollector));
+  }
+
+  Future<HttpResponse<Buffer>> accountBalance(JsonObject jsonIn) {
+    log.info("🚀 AccountBalance PIC received message : " + jsonIn);
+    WebClientOptions options = new WebClientOptions()
+      .setConnectTimeout(5000)
+      .setUserAgent("My-App/1.2.3");
+    options.setKeepAlive(false);
+    //WebClient client = WebClient.create(vertx, options);
+    WebClient client = WebClient.create(vertx, options);
+    JsonObject bodyIn = new JsonObject()
+      .put("codigoCtaCliente", jsonIn.getValue("ACCOUNT_NUMBER"))
+      .put("divisa", "VES");
+    log.info("Sending json : " + bodyIn);
+    log.info("to : " + bcsaPort + " - " + bcsaIp + " - " + bcsaUrl);
+
+      /*return Future.future(promise ->
+        client.post(bcsaPort, bcsaIp, bcsaUrl).sendJson(bodyIn).compose(response -> {return response.bodyAsJson(response.body());})
+      );*/
+    return client.post(bcsaPort, bcsaIp, bcsaUrl).sendJson(bodyIn);
+  }
+
+  private Future<HttpResponse<Buffer>> assetChargePic(JsonObject jsonIn, JsonObject bodyIn) {
+    Promise<JsonObject> promise = Promise.promise();
+    log.info("🚀 assetChargePic : " + jsonIn);
+    WebClientOptions options = new WebClientOptions()
+      .setConnectTimeout(5000)
+      .setUserAgent("Pic-App/1.2.3");
+    options.setKeepAlive(false);
+    //WebClient client = WebClient.create(vertx, options);
+    WebClient client = WebClient.create(vertx, options);
+      /*JsonObject bodyIn = new JsonObject()
+        .put("codigoCtaCliente", jsonIn.getValue("NRO_CTA_1"))
+        .put("divisa", "VES");*/
+    log.info("Sending json : " + jsonIn);
+
+    return client.post(jsonIn.getInteger("port"), jsonIn.getString("ip"), jsonIn.getString("url")).sendJson(bodyIn);
+  }
+
+  Future<HttpResponse<Buffer>> chargeGeneric(JsonObject jsonIn) {
+    log.info("🚀 chargeGeneric : " + jsonIn);
+    WebClientOptions options = new WebClientOptions()
+      .setConnectTimeout(5000)
+      .setUserAgent("My-App/1.2.3");
+    options.setKeepAlive(false);
+    //WebClient client = WebClient.create(vertx, options);
+    WebClient client = WebClient.create(vertx, options);
+    JsonObject bodyIn = new JsonObject()
+      .put("codigoCtaCliente", jsonIn.getValue("ACCOUNT_NUMBER"))
+      .put("divisa", "VES");
+    log.info("Sending json : " + bodyIn);
+    log.info("to : " + jsonIn.getInteger("port") + " - " + jsonIn.getString("ip") + " - " + jsonIn.getString("url"));
+    return client.post(jsonIn.getInteger("port"), jsonIn.getString("ip"), jsonIn.getString("url")).sendJson(bodyIn);
   }
 }

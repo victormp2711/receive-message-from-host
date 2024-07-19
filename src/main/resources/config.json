@@ -16,19 +16,36 @@
     "user": "PCP",
     "password": "TU65Y5283Ua1"
   },
-  "cobroActivos": {
-    "url": "/intcollectionsys/activesU087",
-    "ip": "180.183.170.77",
-    "port": 30813
-  },
-  "cobroDomic": {
-    "url": "/checkaccountbalances/checkaccountbalancesBCSA",
-    "ip": "180.183.170.77",
-    "port": 30813
-  },
   "bcsa": {
     "url": "/checkaccountbalances/checkaccountbalancesBCSA",
     "ip": "180.183.170.77",
     "port": 30813
-  }
+  },
+  "collectors" : [
+    {
+      "idCollector" : 0,
+      "url": "/zzzzzzzzzzzzz/zzzzzzz",
+      "ip": "180.183.170.77",
+      "port": 30813
+    },
+    {
+      "idCollector" : 1,
+      "url": "/xxxxxxxxx/xxxxxxxxxx",
+      "ip": "180.183.170.77",
+      "port": 30813
+    },
+    {
+      "idCollector" : 2,
+      "url": "/intcollectionsys/activesU087",
+      "ip": "180.183.170.77",
+      "port": 30813
+    },
+    {
+      "idCollector" : 3,
+      "url": "/cobranzaDomicOnline/cobrnazaPorCuenta",
+      "ip": "180.183.170.77",
+      "port": 31871
+    }
+  ]
+
 }

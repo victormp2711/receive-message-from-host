@@ -2,8 +2,9 @@ package com.gracaconsultores.messages;
 
 import com.gracaconsultores.messages.models.BigSerializedObject;
 import com.gracaconsultores.messages.models.BigSerializedObjectCodec;
-import com.gracaconsultores.messages.verticles.rest.HttpWebVerticle;
 import com.gracaconsultores.messages.verticles.repository.DbConnVerticle;
+import com.gracaconsultores.messages.verticles.rest.HttpWebVerticle;
+import com.gracaconsultores.messages.verticles.repository.DbConnVerticle1;
 import com.gracaconsultores.messages.verticles.messages.MessageVerticle;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
@@ -66,7 +67,7 @@ public class MainVerticle extends AbstractVerticle {
           log.info("Failed to open file configure");
         } else {
           env = ar.result();
-          log.info("env : " + env.toString());
+          //log.info("env : " + env.toString());
 
           DeploymentOptions opts = new DeploymentOptions();
           opts.setConfig(env);
@@ -74,7 +75,7 @@ public class MainVerticle extends AbstractVerticle {
 
           verticleDeployments.add(deployHelper(HttpWebVerticle.class.getName(), opts));
           verticleDeployments.add(deployHelper(DbConnVerticle.class.getName(), opts));
-          verticleDeployments.add(deployHelper(MessageVerticle.class.getName(),opts));
+          //verticleDeployments.add(deployHelper(MessageVerticle.class.getName(),opts));
 
           CompositeFuture.all(new ArrayList<>(verticleDeployments)).onComplete(result -> {
             if (result.succeeded()) {
