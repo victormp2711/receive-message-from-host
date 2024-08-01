@@ -40,6 +40,7 @@ public class DbConnVerticle extends AbstractVerticle {
   private static String bcsaUrl;
   private static String bcsaIp;
   private static List<Map> collectors;
+  private static JsonArray arrayCollectors;
   public static final String STORE_PROCEDURE_ASSET = "store.procedure.asset.addr";
   public static final String MESSAGE_FROM_HOST = "message.from.host";
   public static final String STORE_PROCEDURE_DOMIC = "store.procedure.domic.addr";
@@ -75,8 +76,11 @@ public class DbConnVerticle extends AbstractVerticle {
         /* obteniendo las propiedades de los cobradores */
         collectors = (List<Map>) map.get("collectors");
         log.info("collectors : " + collectors);
+        arrayCollectors = JsonArray.of(collectors.toArray());
+        log.info("arrayCollectors : " + arrayCollectors);
         //log.info("collectors 0  : " + collectors.get(0));
         //log.info("collectors 1 : " + collectors.get(1).get("url"));
+        //log.info("collectors 1 : " + collectors.get("idCollector").get(1).get("url"));
       }
     });
     log.info("executing process storeProcesureAsset ");
@@ -127,18 +131,11 @@ public class DbConnVerticle extends AbstractVerticle {
         if (conn != null) {
           log.info("- llamando al store procedure");
           cStmt[0] = conn.prepareCall("{CALL GIOM.PKG_SIC_DEBT_ACCOUNTS_COLLECTOR.GET_ACCOUNT_FOR_ALL_COLLECTORS(?, ?, ?)}");
-          log.info("seteado el call al cStmt");
           cStmt[0].setString("P_IN_ACCOUNT", jsonIn.getString("account"));
-          log.info("seteado el P_IN_ACCOUNT al cStmt");
-          /*cStmt[0].setString("P_IN_COLLECTOR", jsonIn.getString("collector"));
-          log.info("seteado el P_IN_COLLECTOR al cStmt");*/
           cStmt[0].registerOutParameter("P_OUT_DATA", OracleTypes.REF_CURSOR);
-          log.info("seteado el P_OUT_DATA al cStmt");
           cStmt[0].registerOutParameter("P_OUT_STATUS", OracleTypes.VARCHAR);
-          log.info("seteado el P_OUT_STATUS al cStmt");
-          log.info("antes de ejecutar cStmt");
           cStmt[0].execute();
-          log.info("despues de ejecutar cStmt");
+          log.info("despues de ejecutar el store procedure");
           String status = null;
           status = (String) cStmt[0].getObject("P_OUT_STATUS");
           log.info("status: " + status);
@@ -146,13 +143,10 @@ public class DbConnVerticle extends AbstractVerticle {
 
           JsonArray arrayJson = new JsonArray();
           while (rs.next()) {
-            String accountNumber  = rs.getString("ACCOUNT_NUMBER");
-            int idCollector       = rs.getInt("ID_DEBT_COLLECTOR");
-            String priority       = rs.getString("PRIORITY");
             JsonObject obj = new JsonObject();
-            obj.put("accountNumber", accountNumber);
-            obj.put("idCollector", idCollector);
-            obj.put("priority", priority);
+            obj.put("accountNumber", rs.getString("ACCOUNT_NUMBER"));
+            obj.put("idCollector", rs.getInt("ID_DEBT_COLLECTOR"));
+            obj.put("priority", rs.getString("PRIORITY"));
             arrayJson.add(obj);
           }
           conn.close();
@@ -163,11 +157,6 @@ public class DbConnVerticle extends AbstractVerticle {
             switch (obj.getInteger("idCollector")) {
               case 2 ->   // procesar cobranza de Activo
                 assetCharge(obj);
-
-                    /*case 3:   // procesar cobranza de domiciliacion y otros productos
-                      genericCharge(new JsonObject()
-                      .put("account", accountNumber));
-                      break;*/
               default -> {
                 log.info("procesando default process");
                 genericCharge(obj);  // procesar cobranza de domiciliacion y otros productos
@@ -199,126 +188,54 @@ public class DbConnVerticle extends AbstractVerticle {
     });
   }
 
-  private Future<?> getAccountFromCollect1(Message<Object> msg) {
-    log.info("Begin getAccountFromCollect : " + msg.body());
-    JsonObject jsonIn = (JsonObject) msg.body();
-    final CallableStatement[] cStmt = {null};
-    return Future.<Void>future(promise -> {
-      Connection conn = getConnectionSic();
-      try {
-        if (conn != null) {
-          log.info("- llamando al store procedure");
-          cStmt[0] = conn.prepareCall("{CALL GIOM.PKG_SIC_DEBT_ACCOUNTS_COLLECTOR.GET_ACCOUNT_FOR_COLLECTORS(?, ?, ?)}");
-          log.info("seteado el call al cStmt");
-          cStmt[0].setString("P_IN_ACCOUNT", jsonIn.getString("account"));
-          log.info("seteado el P_IN_ACCOUNT al cStmt");
-          cStmt[0].registerOutParameter("P_OUT_DATA", OracleTypes.REF_CURSOR);
-          log.info("seteado el P_OUT_DATA al cStmt");
-          cStmt[0].registerOutParameter("P_OUT_STATUS", OracleTypes.VARCHAR);
-          log.info("seteado el P_OUT_STATUS al cStmt");
-          log.info("antes de ejecutar cStmt");
-          cStmt[0].execute();
-          log.info("despues de ejecutar cStmt");
-          String status = null;
-          status = (String) cStmt[0].getObject("P_OUT_STATUS");
-          log.info("status: " + status);
-          final ResultSet rs = (ResultSet) cStmt[0].getObject("P_OUT_DATA");
-
-          JsonArray arrayJson = new JsonArray();
-          while (rs.next()) {
-            String accountNumber  = rs.getString("ACCOUNT_NUMBER");
-            int idCollector       = rs.getInt("ID_DEBT_COLLECTOR");
-            String priority       = rs.getString("PRIORITY");
-            JsonObject obj = new JsonObject();
-            obj.put("accountNumber", accountNumber);
-            obj.put("idCollector", idCollector);
-            obj.put("priority", priority);
-            arrayJson.add(obj);
-          }
-          conn.close();
-          log.info("- resultado de datos: " + arrayJson.toString());
-
-          arrayJson.forEach(item -> {
-            JsonObject obj = (JsonObject) item;
-            switch (obj.getInteger("idCollector")) {
-              case 2 ->   // procesar cobranza de Activo
-                assetCharge(obj);
-
-                    /*case 3:   // procesar cobranza de domiciliacion y otros productos
-                      genericCharge(new JsonObject()
-                      .put("account", accountNumber));
-                      break;*/
-              default -> {
-                log.info("procesando default process");
-                genericCharge(obj);  // procesar cobranza de domiciliacion y otros productos
-              }
-            }
-          });
-          msg.reply(new JsonObject()
-            .put("code", 1000)
-            .put("message", "success")
-            .put("status", 200));
-        } else {
-          msg.reply(new JsonObject()
-            .put("code", 1020)
-            .put("message", "error : " + "connecxion retornada es null")
-            .put("status", 200));
-        }
-      } catch (SQLException e) {
-        throw new RuntimeException(e);
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      } finally{
-        try {
-          if(cStmt[0] !=null) cStmt[0].close(); //close CallableStatement
-          if(conn!=null) conn.close(); // close connection
-        } catch (SQLException e) {
-          e.printStackTrace();
-        }
-      }
-    });
-  }
-
-  private Future<JsonObject> getAccountsByCollector(JsonObject jsonIn) {
+  private JsonObject getAccountsByCollector(JsonObject jsonIn) {
     log.info("🚀 getAccountsByCollector : " + jsonIn);
     final CallableStatement[] cStmt = {null};
-    return Future.<JsonObject>future(promise -> {
-      Connection conn = getConnectionSic();
-      try {
-        if (conn != null) {
-          cStmt[0] = conn.prepareCall("{CALL GIOM.PKG_SIC_DEBT_ACCOUNTS_COLLECTOR.GET_ACCOUNT_BY_COLLECTOR(?, ?, ?, ?)}");
-          cStmt[0].setString("P_IN_ACCOUNT", jsonIn.getString("account"));
-          cStmt[0].setInt("P_IN_COLLECTOR", jsonIn.getInteger("collector"));
-          cStmt[0].registerOutParameter("P_OUT_DATA", OracleTypes.REF_CURSOR);
-          cStmt[0].registerOutParameter("P_OUT_STATUS", OracleTypes.VARCHAR);
-          cStmt[0].execute();
-          String status = null;
-          status = (String) cStmt[0].getObject("P_OUT_STATUS");
-          log.info("status: " + status);
-          final ResultSet rs = (ResultSet) cStmt[0].getObject("P_OUT_DATA");
-          rs.next();
-          JsonArray arrayJson = new JsonArray();
+    Connection conn = getConnectionSic();
+    try {
+      if (conn != null) {
+        cStmt[0] = conn.prepareCall("{CALL GIOM.PKG_SIC_DEBT_ACCOUNTS_COLLECTOR.GET_ACCOUNT_BY_COLLECTOR(?, ?, ?, ?)}");
+        cStmt[0].setString("P_IN_ACCOUNT", jsonIn.getString("account"));
+        cStmt[0].setInt("P_IN_COLLECTOR", jsonIn.getInteger("collector"));
+        cStmt[0].registerOutParameter("P_OUT_DATA", OracleTypes.REF_CURSOR);
+        cStmt[0].registerOutParameter("P_OUT_STATUS", OracleTypes.VARCHAR);
+        cStmt[0].execute();
+        String status = null;
+        status = (String) cStmt[0].getObject("P_OUT_STATUS");
+        log.info("status: " + status);
+        final ResultSet rs = (ResultSet) cStmt[0].getObject("P_OUT_DATA");
+
+        JsonArray arrayJson = new JsonArray();
+        while (rs.next()) {
           JsonObject obj = new JsonObject();
           obj.put("accountNumber", rs.getString("ACCOUNT_NUMBER"));
-          obj.put("creditNumber", rs.getInt("CREDIT_NUMBER"));
+          obj.put("creditNumber", rs.getString("CREDIT_NUMBER"));
           obj.put("currency", rs.getString("CURRENCY"));
-          conn.close();
+          arrayJson.add(obj);
+        }
+        if(arrayJson.size() > 0){
+          log.info("data complementaria : " + arrayJson.getJsonObject(0));
+          return arrayJson.getJsonObject(0);
         } else {
-          log.info("message", "error : " + "connecxion retornada es null");
+          log.info("no hay data complementaria para : " + jsonIn);
+          return null;
         }
-      } catch (SQLException e) {
-        throw new RuntimeException(e);
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      } finally{
-        try {
-          if(cStmt[0] !=null) cStmt[0].close(); //close CallableStatement
-          if(conn!=null) conn.close(); // close connection
-        } catch (SQLException e) {
-          e.printStackTrace();
-        }
+      } else {
+        log.info("message", "error : " + "no se obtuvo conexion de BD");
+        return null;
       }
-    });
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    } finally{
+      try {
+        if(cStmt[0] !=null) cStmt[0].close(); //close CallableStatement
+        if(conn!=null) conn.close(); // close connection
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   private <T> void genericCharge(JsonObject bodyIn) {
@@ -369,44 +286,52 @@ public class DbConnVerticle extends AbstractVerticle {
     WebClient client = WebClient.create(vertx);
     JsonObject bodyInCollector = new JsonObject()
       .put("account", bodyIn.getValue("accountNumber"))
-      .put("collector", "idCollector");
-    getAccountsByCollector(bodyInCollector).onComplete(ar ->{
-        if(ar.succeeded()) {
-          JsonObject jsonResponse = ar.result();
-          log.info("se obtiene datos complementarios para la U087: " + jsonResponse);
-          JsonObject bodyInCharge = new JsonObject();
-          bodyInCharge.put("contratoCredito",   jsonResponse.getString("CREDIT_NUMBER"));
-          bodyInCharge.put("codDivisa",         jsonResponse.getString("CURRENCY"));
-          bodyInCharge.put("recibos",           "");
-          bodyInCharge.put("importe",           0.00);
-          bodyInCharge.put("fechaValor",        sdf2.format(new Date()));
-          bodyInCharge.put("indFormaDePago",    "1");
-          bodyInCharge.put("cccCargo",          bodyIn.getString("ACCOUNT_NUMBER"));
-          bodyInCharge.put("numeroDeCheque",    "");
-          bodyInCharge.put("importeDelCheque",  "");
-          bodyInCharge.put("tasaDeMora",        "");
-          bodyInCharge.put("importeDeMora",     "");
-          bodyInCharge.put("nioDeCobroLinea",   "");
-          bodyInCharge.put("indicadorDeCobro",  "");
-          bodyInCharge.put("user",              "BDVN001");
-          log.info("sending json to asset charge pic U087 : " + bodyInCharge);
-          assetChargePic(bodyIn, bodyInCharge).onComplete(charge ->{
-            if (charge.succeeded()) {
-              JsonObject responseU087 = charge.result().bodyAsJsonObject();
-              log.info("responseU087 : " + responseU087);
-              if(responseU087.getInteger("status") == 1000){
-                log.info("✅ return pic with HTTP response with status " + responseU087.getString("message"));
-              } else {
-                log.info("no se realiza la operacion de cobranza activos por : " + responseU087.getString("message"));
-              }
-            } else {
-              log.info("error al realiza la operacion de cobranza activos por : " + charge.cause());
-            }
-          });
-        } else {
-          log.info("ne se pudo obtener datos complementarios para la U087: " + bodyInCollector);
+      .put("collector", bodyIn.getValue("idCollector"));
+    JsonObject jsonResponse = getAccountsByCollector(bodyInCollector);
+    if(jsonResponse != null && !jsonResponse.isEmpty()) {
+      log.info("se obtiene datos complementarios para la U087: " + jsonResponse);
+      JsonObject bodyInCharge = new JsonObject();
+      bodyInCharge.put("contratoCredito",   jsonResponse.getString("creditNumber"));
+      bodyInCharge.put("codDivisa",         jsonResponse.getString("currency"));
+      bodyInCharge.put("recibos",           "");
+      bodyInCharge.put("importe",           0.00);
+      bodyInCharge.put("fechaValor",        sdf2.format(new Date()));
+      bodyInCharge.put("indFormaDePago",    "1");
+      bodyInCharge.put("cccCargo",          bodyIn.getString("accountNumber"));
+      bodyInCharge.put("numeroDeCheque",    "");
+      bodyInCharge.put("importeDelCheque",  "");
+      bodyInCharge.put("tasaDeMora",        "");
+      bodyInCharge.put("importeDeMora",     "");
+      bodyInCharge.put("nioDeCobroLinea",   "");
+      bodyInCharge.put("indicadorDeCobro",  "");
+      bodyInCharge.put("user",              "BDVN001");
+      log.info("sending json to asset charge pic U087 : " + bodyInCharge);
+
+      for(int i=0;i<arrayCollectors.size();i++)
+      {
+        JsonObject jsonObject1 = arrayCollectors.getJsonObject(i);
+        if(jsonObject1.getInteger("idCollector") == (bodyIn.getInteger("idCollector"))) {
+          bodyIn.put("url", jsonObject1.getString("url"));
+          bodyIn.put("ip", jsonObject1.getString("ip"));
+          bodyIn.put("port", jsonObject1.getInteger("port"));
         }
-    }).onFailure(f -> log.error("error al realiza la operacion de getAccountsByCollector con : " + bodyInCollector));
+      }
+      assetChargePic(bodyIn, bodyInCharge).onComplete(charge ->{
+        if (charge.succeeded()) {
+          JsonObject responseU087 = charge.result().bodyAsJsonObject();
+          log.info("responseU087 : " + responseU087);
+          if(responseU087.getInteger("status") == 1000){
+            log.info("✅ return pic with HTTP response with status " + responseU087.getString("message"));
+          } else {
+            log.info("no se realiza la operacion de cobranza activos por : " + responseU087.getString("message"));
+          }
+        } else {
+          log.info("error al realiza la operacion de cobranza activos por : " + charge.cause());
+        }
+      });
+    } else {
+      log.info("ne se pudo obtener datos complementarios para la U087: " + bodyInCollector);
+    }
   }
 
   Future<HttpResponse<Buffer>> accountBalance(JsonObject jsonIn) {
@@ -431,7 +356,7 @@ public class DbConnVerticle extends AbstractVerticle {
 
   private Future<HttpResponse<Buffer>> assetChargePic(JsonObject jsonIn, JsonObject bodyIn) {
     Promise<JsonObject> promise = Promise.promise();
-    log.info("🚀 assetChargePic : " + jsonIn);
+    log.info("🚀 assetChargePic : " + jsonIn + " - " + bodyIn);
     WebClientOptions options = new WebClientOptions()
       .setConnectTimeout(5000)
       .setUserAgent("Pic-App/1.2.3");

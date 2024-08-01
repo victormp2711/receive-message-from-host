@@ -4,8 +4,6 @@ import com.gracaconsultores.messages.models.BigSerializedObject;
 import com.gracaconsultores.messages.models.BigSerializedObjectCodec;
 import com.gracaconsultores.messages.verticles.repository.DbConnVerticle;
 import com.gracaconsultores.messages.verticles.rest.HttpWebVerticle;
-import com.gracaconsultores.messages.verticles.repository.DbConnVerticle1;
-import com.gracaconsultores.messages.verticles.messages.MessageVerticle;
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
 import io.vertx.config.ConfigStoreOptions;
@@ -71,6 +69,8 @@ public class MainVerticle extends AbstractVerticle {
 
           DeploymentOptions opts = new DeploymentOptions();
           opts.setConfig(env);
+          opts.setThreadingModel(ThreadingModel.WORKER);
+          opts.setMaxWorkerExecuteTime(20000);
           opts.setInstances(1);
 
           verticleDeployments.add(deployHelper(HttpWebVerticle.class.getName(), opts));

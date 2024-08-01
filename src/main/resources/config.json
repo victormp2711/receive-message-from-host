@@ -23,18 +23,6 @@
   },
   "collectors" : [
     {
-      "idCollector" : 0,
-      "url": "/zzzzzzzzzzzzz/zzzzzzz",
-      "ip": "180.183.170.77",
-      "port": 30813
-    },
-    {
-      "idCollector" : 1,
-      "url": "/xxxxxxxxx/xxxxxxxxxx",
-      "ip": "180.183.170.77",
-      "port": 30813
-    },
-    {
       "idCollector" : 2,
       "url": "/intcollectionsys/activesU087",
       "ip": "180.183.170.77",
@@ -42,10 +30,15 @@
     },
     {
       "idCollector" : 3,
+      "url": "/collectorsDomic",
+      "ip": "receive-collection-online.domic",
+      "port": 80
+    },
+    {
+      "idCollector" : 6,
       "url": "/cobranzaDomicOnline/cobrnazaPorCuenta",
       "ip": "180.183.170.77",
       "port": 31871
     }
   ]
-
 }
