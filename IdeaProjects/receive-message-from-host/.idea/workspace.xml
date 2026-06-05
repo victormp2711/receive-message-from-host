@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e7a1156f-6f3d-40f4-9e8c-4c09d21c1f36" name="Changes" comment="Cambios PCP2 ultima version de produccion. no tiene los cambios de TDC" />
+    <list id="325d6d60-7561-40b4-b5e7-5dca05c1fb10" name="ignored" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="fase-1-U087" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitLabMergeRequestFiltersHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPENED&quot;,
+    &quot;assignee&quot;: {
+      &quot;type&quot;: &quot;org.jetbrains.plugins.gitlab.mergerequest.ui.filters.GitLabMergeRequestsFiltersValue.MergeRequestsMemberFilterValue.MergeRequestsAssigneeFilterValue&quot;,
+      &quot;username&quot;: &quot;ct24504&quot;,
+      &quot;fullname&quot;: &quot;Victor Marrero - Gcia Soporte Unix&quot;
+    }
+  }
+}</component>
+  <component name="GitLabMergeRequestsSettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;first&quot;: &quot;http://git.banvenez.corp/sic/receive-message-from-host.git&quot;,
+    &quot;second&quot;: &quot;552fc1f4-d1dc-4d0f-bd11-9bef7c1a3a0f&quot;
+  }
+}</component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2eErpWuTXJ7rBNAGcke5qRDKRh5" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.Application.executor": "Run",
+    "Application.MainVerticle.executor": "Run",
+    "Maven.OracleProject [clean].executor": "Run",
+    "Maven.OracleProject [install].executor": "Run",
+    "Maven.OracleProject [org.codehaus.mojo:exec-maven-plugin:3.0.0:exec].executor": "Run",
+    "Maven.OracleProject [org.codehaus.mojo:exec-maven-plugin:3.0.0:java].executor": "Run",
+    "Maven.PostgresProject [clean].executor": "Run",
+    "Maven.PostgresProject [install].executor": "Run",
+    "Maven.PostgresProject [org.codehaus.mojo:exec-maven-plugin:3.0.0:exec].executor": "Run",
+    "Maven.PostgresProject [org.codehaus.mojo:exec-maven-plugin:3.0.0:java].executor": "Run",
+    "Maven.receive-message-from-host [clean].executor": "Run",
+    "Maven.receive-message-from-host [compile].executor": "Run",
+    "Maven.receive-message-from-host [install].executor": "Run",
+    "Maven.receive-message-from-host [org.codehaus.mojo:exec-maven-plugin:3.0.0:exec].executor": "Run",
+    "Maven.receive-message-from-host [org.codehaus.mojo:exec-maven-plugin:3.0.0:java].executor": "Run",
+    "Maven.receive-message-from-host [site].executor": "Run",
+    "Maven.receive-message-from-host [test].executor": "Run",
+    "Maven.receive-message-from-host [validate].executor": "Run",
+    "Maven.receive-message-from-host [verify].executor": "Run",
+    "Maven.receive-message-from-host-batch [clean].executor": "Run",
+    "Maven.receive-message-from-host-batch [install].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.codeium.enabled": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/workspace/VM/vertx/SIC/receive-message-from-host/src/main/java/com/gracaconsultores/messages/verticles/generic/service",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "MavenSettings"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workspace\VM\vertx\SIC\receive-message-from-host\src\main\java\com\gracaconsultores\messages\verticles\generic\service" />
+      <recent name="D:\workspace\VM\vertx\SIC\receive-message-from-host\src\main\java\com\gracaconsultores\messages\verticles\repository" />
+      <recent name="D:\workspace\VM\vertx\SIC\receive-message-from-host\src\main\java\com\gracaconsultores\messages\verticles" />
+      <recent name="D:\workspace\VM\vertx\SIC\receive-message-from-host\src\main\java\com\gracaconsultores\messages\verticles\pampa" />
+      <recent name="D:\workspace\VM\vertx\SIC\receive-message-from-host\src\main\java\com\gracaconsultores\messages" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\workspace\VM\vertx\receive-message-from-host\src\main\resources" />
+      <recent name="D:\workspace\VM\vertx\receive-message-from-host\src\main\java\com\dbconnect\PostgresProject" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.gracaconsultores.messages.ds" />
+      <recent name="com.gracaconsultores.messages.verticles.services" />
+      <recent name="com.gracaconsultores.messages.verticles.generic.service" />
+      <recent name="com.gracaconsultores.messages.verticles.repository" />
+      <recent name="com.gracaconsultores.messages.models" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="Java_Vert.x_Postgres_CRUD_Api" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Java_Vert.x_Postgres_CRUD_Api" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e7a1156f-6f3d-40f4-9e8c-4c09d21c1f36" name="Changes" comment="" />
+      <changelist id="325d6d60-7561-40b4-b5e7-5dca05c1fb10" name="ignored" comment="" />
+      <created>1711480764236</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1711480764236</updated>
+    </task>
+    <task id="LOCAL-00001" summary="initial commit">
+      <option name="closed" value="true" />
+      <created>1714753339064</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1714753339064</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Cambios para la cobranza de Activos">
+      <option name="closed" value="true" />
+      <created>1720727682991</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1720727682991</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Cambios para la cobranza de Activos">
+      <option name="closed" value="true" />
+      <created>1721419580316</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1721419580316</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Cambios para la cobranza de Activos">
+      <option name="closed" value="true" />
+      <created>1721421507054</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1721421507054</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Cambios para la cobranza de Activos">
+      <option name="closed" value="true" />
+      <created>1722541392514</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1722541392514</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Agregando registros de logs">
+      <option name="closed" value="true" />
+      <created>1723817447011</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1723817447011</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Agregando registros de logs">
+      <option name="closed" value="true" />
+      <created>1724699620389</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1724699620389</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Agregando registros de logs respuesta inicial">
+      <option name="closed" value="true" />
+      <created>1725894612275</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1725894612275</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Agregando registros de logs respuesta inicial">
+      <option name="closed" value="true" />
+      <created>1725908698999</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1725908698999</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Agregando registros de logs respuesta inicial">
+      <option name="closed" value="true" />
+      <created>1727184224118</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1727184224118</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Agregando registros de logs respuesta inicial">
+      <option name="closed" value="true" />
+      <created>1727199319396</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1727199319396</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Agregando registros de logs respuesta inicial">
+      <option name="closed" value="true" />
+      <created>1727463528450</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1727463528451</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Agregando registros de logs respuesta inicial">
+      <option name="closed" value="true" />
+      <created>1727552862879</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1727552862879</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Agregando registros de logs respuesta inicial">
+      <option name="closed" value="true" />
+      <created>1727554836568</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1727554836568</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Agregando registros de logs respuesta inicial">
+      <option name="closed" value="true" />
+      <created>1728065448616</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1728065448616</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Agregando registros de logs respuesta inicial">
+      <option name="closed" value="true" />
+      <created>1728075567769</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1728075567769</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Agregando registros de logs respuesta inicial">
+      <option name="closed" value="true" />
+      <created>1728422015612</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1728422015612</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Agregando registros de logs respuesta inicial">
+      <option name="closed" value="true" />
+      <created>1728596143710</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1728596143711</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Agregando registros de logs respuesta inicial">
+      <option name="closed" value="true" />
+      <created>1728682505813</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1728682505813</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Retorno sin esperar a validar cuenta en cache, mejora en logback y agregando estadisticas del proceso">
+      <option name="closed" value="true" />
+      <created>1729696621976</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1729696621976</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Retorno sin esperar a validar cuenta en cache, mejora en logback y agregando estadisticas del proceso">
+      <option name="closed" value="true" />
+      <created>1730133816586</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1730133816586</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Retorno sin esperar a validar cuenta en cache, mejora en logback y agregando estadisticas del proceso">
+      <option name="closed" value="true" />
+      <created>1741287163198</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1741287163198</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Retorno sin esperar a validar cuenta en cache, mejora en logback y agregando estadisticas del proceso">
+      <option name="closed" value="true" />
+      <created>1745353307378</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1745353307378</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Cambios para corregisr mensaje del log cuando sea 50 o 00 en PCP2">
+      <option name="closed" value="true" />
+      <created>1764787090104</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1764787090108</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Agregando rutinas para cobros de cobradores genericos">
+      <option name="closed" value="true" />
+      <created>1770150129854</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1770150129854</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Agregando rutinas para cobros de cobradores genericos">
+      <option name="closed" value="true" />
+      <created>1772047687037</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1772047687037</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Cambios TDC - PCP2">
+      <option name="closed" value="true" />
+      <created>1779214796442</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1779214796442</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Cambios PCP2 ultima version de produccion. no tiene los cambios de TDC">
+      <option name="closed" value="true" />
+      <created>1779893086907</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1779893086907</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Cambios PCP2 ultima version de produccion. no tiene los cambios de TDC">
+      <option name="closed" value="true" />
+      <created>1780513999538</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1780513999538</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="initial commit" />
+    <MESSAGE value="Cambios para la cobranza de Activos" />
+    <MESSAGE value="Agregando registros de logs" />
+    <MESSAGE value="Agregando registros de logs respuesta inicial" />
+    <MESSAGE value="Retorno sin esperar a validar cuenta en cache, mejora en logback y agregando estadisticas del proceso" />
+    <MESSAGE value="Cambios para corregisr mensaje del log cuando sea 50 o 00 en PCP2" />
+    <MESSAGE value="Agregando rutinas para cobros de cobradores genericos" />
+    <MESSAGE value="Cambios TDC - PCP2" />
+    <MESSAGE value="Cambios PCP2 ultima version de produccion. no tiene los cambios de TDC" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cambios PCP2 ultima version de produccion. no tiene los cambios de TDC" />
+  </component>
+</project>

@@ -1,0 +1,22 @@
+{
+  "db_sic":{
+    "url":"jdbc:oracle:thin:@//180.183.203.182:1535/GIOMQ.banvenqa.com",
+    "host":"180.183.203.182",
+    "port":"1536",
+    "service_name":"GIOMQ.banvenqa.com",
+    "user":"USR_SIC",
+    "password":"98C722BD636EBF5EFC412BB06565ACFE",
+    "maxPool":500,
+    "minIdle":100,
+    "isPassworEncripted": "Y"
+  },
+  "db_domic": {
+    "host": "180.183.199.191",
+    "port": "1560",
+    "service_name": "PCPQ.BANVENEZ.CORP",
+    "user": "PCP",
+    "password": "TU65Y5283Ua1",
+    "maxPool":300,
+    "minIdle":50
+  }
+}

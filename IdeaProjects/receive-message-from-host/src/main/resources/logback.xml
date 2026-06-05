@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan = "true">
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!--<withJansi>true</withJansi>-->
+    <!--<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+      <layout class="chapters.layouts.MySampleLayout" />
+    </encoder>-->
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>
+        %d{yyyy-MM-dd} %d{HH:mm:ss.SSS} [%26thread] %-5level %-38logger{36} - %msg%n
+      </Pattern>
+    </layout>
+
+  </appender>
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--<withJansi>true</withJansi>-->
+    <file>logs/receive-message-from-host/receive-message-from-host.log</file>
+    <append>false</append>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>logs/receive-message-from-host/receive-message-from-host.%d{yyyy-MM-dd-HH-mm}.zip</fileNamePattern>
+      <maxHistory>15</maxHistory>
+      <totalSizeCap>6GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%d{yyyy-MM-dd} %d{HH:mm:ss.SSS} [%26thread] %-5level %-38logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="STDOUT"/>
+  </root>
+  <root level="info">
+    <appender-ref ref="FILE"/>
+  </root>
+  <logger name="com.zaxxer.hikari.pool.PoolBase" level="ERROR"/>
+  <logger name="com.zaxxer.hikari.pool.HikariPool" level="ERROR"/>
+  <logger name="com.zaxxer.hikari.HikariDataSource" level="ERROR"/>
+  <logger name="io.netty.channel.nio.NioEventLoop" level="ERROR"/>
+  <logger name="io.vertx.core.impl.BlockedThreadChecker" level="WARN" additivity="false"> <appender-ref ref="blocking_issues"/>
+  </logger>
+</configuration>

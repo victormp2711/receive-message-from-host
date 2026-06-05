@@ -1,0 +1,44 @@
+{
+  "http": {
+    "port_qa": 80
+  },
+  "db_sic": {
+    "host": "180.183.112.128",
+    "port": "1536",
+    "service_name": "GIOMD.banvendes.corp",
+    "user": "GIOM",
+    "password": "giom_26"
+  },
+  "db_domic": {
+    "host": "180.183.199.191",
+    "port": "1560",
+    "service_name": "PCPQ.BANVENEZ.CORP",
+    "user": "PCP",
+    "password": "TU65Y5283Ua1"
+  },
+  "bcsa": {
+    "url": "/checkaccountbalances/checkaccountbalancesBCSA",
+    "ip": "180.183.170.77",
+    "port": 30813
+  },
+  "collectors" : [
+    {
+      "idCollector" : 1,
+      "url": "/collectorsDomic",
+      "ip": "receive-collection-online.domic",
+      "port": 80
+    },
+    {
+      "idCollector" : 2,
+      "url": "/intcollectionsys/activesU087",
+      "ip": "180.183.170.77",
+      "port": 30813
+    },
+    {
+      "idCollector" : 6,
+      "url": "/cobranzaDomicOnline/cobrnazaPorCuenta",
+      "ip": "180.183.170.77",
+      "port": 31871
+    }
+  ]
+}

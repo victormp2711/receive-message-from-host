@@ -1,0 +1,71 @@
+{
+  "http": {
+    "port": 80,
+    "itentosTimeOutPic" : 3,
+    "registreWhitDiscovery": 0
+  },
+  "scheduler": {
+    "periodic": 10000
+  },
+  "restart": {
+    "hour": 23,
+    "minute": 35,
+    "second": 1
+  },
+  "bcsa": {
+    "url": "/checkaccountbalances/checkaccountbalancesBCSA",
+    "ip": "180.183.170.77",
+    "port": 30813
+  },
+  "collectors" : [
+    {
+      "idCollector" : 1,
+      "url": "/sic/collectorsDomic",
+      "ip": "receive-collection-online.domic",
+      "port": 80,
+      "userPic": "PCP0001",
+      "channelsPic": "05",
+      "ip2": "180.183.170.77",
+      "port2": 30813,
+      "activeFunction": "true"
+    },
+    {
+      "idCollector" : 2,
+      "url": "/intcollectionsys/activesU088",
+      "ip": "180.183.170.77",
+      "port": 30813,
+      "userPic": "SIC0001",
+      "channelsPic": "05",
+      "ip2": "180.183.170.77",
+      "port2": 30813,
+      "activeFunction": "false"
+    },
+    {
+      "idCollector" : 3,
+      "url": "/intcollectionsys/tdcpenaltynonpaymentMPSI",
+      "ip": "180.183.170.77",
+      "port": 30813,
+      "userPic": "SIC0001",
+      "channelsPic": "05",
+      "ip2": "180.183.170.79",
+      "port2": 30813,
+      "activeFunction": "false"
+    }
+  ],
+  "piloto" : [
+    {
+      "rif" : "1"
+    },
+    {
+      "rif" : "2"
+    },
+    {
+      "rif" : "3"
+    },
+    {
+      "rif" : "4"
+    }
+  ]
+
+}
+

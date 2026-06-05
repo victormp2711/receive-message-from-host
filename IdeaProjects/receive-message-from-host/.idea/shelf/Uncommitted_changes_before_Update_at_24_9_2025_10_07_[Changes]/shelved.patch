@@ -1,0 +1,670 @@
+Index: src/main/resources/config.json
+===================================================================
+diff --git a/src/main/resources/config.json b/src/main/resources/config.json
+deleted file mode 100644
+--- a/src/main/resources/config.json	(revision 5b8430cac77ecc5cd22361dd102d3538bd5755ae)
++++ /dev/null	(revision 5b8430cac77ecc5cd22361dd102d3538bd5755ae)
+@@ -1,44 +0,0 @@
+-{
+-  "http": {
+-    "port_qa": 80
+-  },
+-  "db_sic": {
+-    "host": "180.183.112.128",
+-    "port": "1536",
+-    "service_name": "GIOMD.banvendes.corp",
+-    "user": "GIOM",
+-    "password": "giom_26"
+-  },
+-  "db_domic": {
+-    "host": "180.183.199.191",
+-    "port": "1560",
+-    "service_name": "PCPQ.BANVENEZ.CORP",
+-    "user": "PCP",
+-    "password": "TU65Y5283Ua1"
+-  },
+-  "bcsa": {
+-    "url": "/checkaccountbalances/checkaccountbalancesBCSA",
+-    "ip": "180.183.170.77",
+-    "port": 30813
+-  },
+-  "collectors" : [
+-    {
+-      "idCollector" : 1,
+-      "url": "/collectorsDomic",
+-      "ip": "receive-collection-online.domic",
+-      "port": 80
+-    },
+-    {
+-      "idCollector" : 2,
+-      "url": "/intcollectionsys/activesU087",
+-      "ip": "180.183.170.77",
+-      "port": 30813
+-    },
+-    {
+-      "idCollector" : 6,
+-      "url": "/cobranzaDomicOnline/cobrnazaPorCuenta",
+-      "ip": "180.183.170.77",
+-      "port": 31871
+-    }
+-  ]
+-}
+Index: keys/ClientCustodio1/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/ClientCustodio1/cl.xml b/keys/ClientCustodio1/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180463)
++++ b/keys/ClientCustodio1/cl.xml	(date 1698242180463)
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>3C1743DEC5C5DA5A3E7E76EE14A882B5</llave>
++</llaves3DES>
++
+Index: .project
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<projectDescription>\r\n\t<name>PostgresProject</name>\r\n\t<comment></comment>\r\n\t<projects>\r\n\t</projects>\r\n\t<buildSpec>\r\n\t\t<buildCommand>\r\n\t\t\t<name>org.eclipse.jdt.core.javabuilder</name>\r\n\t\t\t<arguments>\r\n\t\t\t</arguments>\r\n\t\t</buildCommand>\r\n\t\t<buildCommand>\r\n\t\t\t<name>org.eclipse.m2e.core.maven2Builder</name>\r\n\t\t\t<arguments>\r\n\t\t\t</arguments>\r\n\t\t</buildCommand>\r\n\t</buildSpec>\r\n\t<natures>\r\n\t\t<nature>org.eclipse.jdt.core.javanature</nature>\r\n\t\t<nature>org.eclipse.m2e.core.maven2Nature</nature>\r\n\t</natures>\r\n</projectDescription>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.project b/.project
+--- a/.project	(revision 5b8430cac77ecc5cd22361dd102d3538bd5755ae)
++++ b/.project	(date 1750855399656)
+@@ -20,4 +20,15 @@
+ 		<nature>org.eclipse.jdt.core.javanature</nature>
+ 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
+ 	</natures>
++	<filteredResources>
++		<filter>
++			<id>1750855399609</id>
++			<name></name>
++			<type>30</type>
++			<matcher>
++				<id>org.eclipse.core.resources.regexFilterMatcher</id>
++				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
++			</matcher>
++		</filter>
++	</filteredResources>
+ </projectDescription>
+Index: .classpath
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<classpath>\r\n\t<classpathentry kind=\"src\" output=\"target/classes\" path=\"src/main/java\">\r\n\t\t<attributes>\r\n\t\t\t<attribute name=\"optional\" value=\"true\"/>\r\n\t\t\t<attribute name=\"maven.pomderived\" value=\"true\"/>\r\n\t\t</attributes>\r\n\t</classpathentry>\r\n\t<classpathentry kind=\"src\" output=\"target/test-classes\" path=\"src/test/java\">\r\n\t\t<attributes>\r\n\t\t\t<attribute name=\"optional\" value=\"true\"/>\r\n\t\t\t<attribute name=\"maven.pomderived\" value=\"true\"/>\r\n\t\t\t<attribute name=\"test\" value=\"true\"/>\r\n\t\t</attributes>\r\n\t</classpathentry>\r\n\t<classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11\">\r\n\t\t<attributes>\r\n\t\t\t<attribute name=\"maven.pomderived\" value=\"true\"/>\r\n\t\t</attributes>\r\n\t</classpathentry>\r\n\t<classpathentry kind=\"con\" path=\"org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER\">\r\n\t\t<attributes>\r\n\t\t\t<attribute name=\"maven.pomderived\" value=\"true\"/>\r\n\t\t</attributes>\r\n\t</classpathentry>\r\n\t<classpathentry kind=\"output\" path=\"target/classes\"/>\r\n</classpath>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.classpath b/.classpath
+--- a/.classpath	(revision 5b8430cac77ecc5cd22361dd102d3538bd5755ae)
++++ b/.classpath	(date 1750855397632)
+@@ -13,7 +13,7 @@
+ 			<attribute name="test" value="true"/>
+ 		</attributes>
+ 	</classpathentry>
+-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
++	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17">
+ 		<attributes>
+ 			<attribute name="maven.pomderived" value="true"/>
+ 		</attributes>
+@@ -21,6 +21,36 @@
+ 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+ 		<attributes>
+ 			<attribute name="maven.pomderived" value="true"/>
++		</attributes>
++	</classpathentry>
++	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
++		<attributes>
++			<attribute name="maven.pomderived" value="true"/>
++			<attribute name="optional" value="true"/>
++		</attributes>
++	</classpathentry>
++	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources">
++		<attributes>
++			<attribute name="maven.pomderived" value="true"/>
++			<attribute name="test" value="true"/>
++			<attribute name="optional" value="true"/>
++		</attributes>
++	</classpathentry>
++	<classpathentry kind="src" path="target/generated-sources/annotations">
++		<attributes>
++			<attribute name="optional" value="true"/>
++			<attribute name="maven.pomderived" value="true"/>
++			<attribute name="ignore_optional_problems" value="true"/>
++			<attribute name="m2e-apt" value="true"/>
++		</attributes>
++	</classpathentry>
++	<classpathentry kind="src" output="target/test-classes" path="target/generated-test-sources/test-annotations">
++		<attributes>
++			<attribute name="optional" value="true"/>
++			<attribute name="maven.pomderived" value="true"/>
++			<attribute name="ignore_optional_problems" value="true"/>
++			<attribute name="m2e-apt" value="true"/>
++			<attribute name="test" value="true"/>
+ 		</attributes>
+ 	</classpathentry>
+ 	<classpathentry kind="output" path="target/classes"/>
+Index: keys/sicFtpMainframe1/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/sicFtpMainframe1/cl.xml b/keys/sicFtpMainframe1/cl.xml
+new file mode 100644
+--- /dev/null	(date 1729250714939)
++++ b/keys/sicFtpMainframe1/cl.xml	(date 1729250714939)
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>228DF3CB64D64615C2C09194842CF75A</llave>
++</llaves3DES>
+Index: src/main/resources/logback.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<configuration scan = \"true\">\r\n  <appender name=\"STDOUT\" class=\"ch.qos.logback.core.ConsoleAppender\">\r\n    <!--<withJansi>true</withJansi>-->\r\n    <!--<encoder class=\"ch.qos.logback.core.encoder.LayoutWrappingEncoder\">\r\n      <layout class=\"chapters.layouts.MySampleLayout\" />\r\n    </encoder>-->\r\n    <layout class=\"ch.qos.logback.classic.PatternLayout\">\r\n      <Pattern>\r\n        %d{yyyy-MM-dd} %d{HH:mm:ss.SSS} [%26thread] %-5level %-38logger{36} - %msg%n\r\n      </Pattern>\r\n    </layout>\r\n\r\n  </appender>\r\n  <appender name=\"FILE\" class=\"ch.qos.logback.core.rolling.RollingFileAppender\">\r\n    <!--<withJansi>true</withJansi>-->\r\n    <file>logs/receive-message-from-host.log</file>\r\n    <append>false</append>\r\n    <rollingPolicy class=\"ch.qos.logback.core.rolling.TimeBasedRollingPolicy\">\r\n      <fileNamePattern>logs/receive-message-from-host.%d{yyyy-MM-dd-HH-mm}.zip</fileNamePattern>\r\n      <maxHistory>10</maxHistory>\r\n      <totalSizeCap>3GB</totalSizeCap>\r\n    </rollingPolicy>\r\n    <encoder>\r\n      <pattern>%d{yyyy-MM-dd} %d{HH:mm:ss.SSS} [%26thread] %-5level %-38logger{36} - %msg%n</pattern>\r\n    </encoder>\r\n  </appender>\r\n\r\n  <root level=\"info\">\r\n    <appender-ref ref=\"STDOUT\"/>\r\n  </root>\r\n  <root level=\"debug\">\r\n    <appender-ref ref=\"FILE\"/>\r\n  </root>\r\n  <logger name=\"com.zaxxer.hikari.pool.PoolBase\" level=\"ERROR\"/>\r\n  <logger name=\"com.zaxxer.hikari.pool.HikariPool\" level=\"ERROR\"/>\r\n  <logger name=\"com.zaxxer.hikari.HikariDataSource\" level=\"ERROR\"/>\r\n  <logger name=\"io.netty.channel.nio.NioEventLoop\" level=\"ERROR\"/>\r\n  <logger name=\"io.vertx.core.impl.BlockedThreadChecker\" level=\"WARN\" additivity=\"false\"> <appender-ref ref=\"blocking_issues\"/>\r\n  </logger>\r\n</configuration>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/logback.xml b/src/main/resources/logback.xml
+--- a/src/main/resources/logback.xml	(revision 5b8430cac77ecc5cd22361dd102d3538bd5755ae)
++++ b/src/main/resources/logback.xml	(date 1754404365747)
+@@ -14,12 +14,13 @@
+   </appender>
+   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+     <!--<withJansi>true</withJansi>-->
+-    <file>logs/receive-message-from-host.log</file>
++    <file>logs/receive-message-from-host-batch.log</file>
+     <append>false</append>
+     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+-      <fileNamePattern>logs/receive-message-from-host.%d{yyyy-MM-dd-HH-mm}.zip</fileNamePattern>
+-      <maxHistory>10</maxHistory>
+-      <totalSizeCap>3GB</totalSizeCap>
++      <fileNamePattern>logs/receive-message-from-host-batch.%d{yyyy-MM-dd-HH-mm}.zip</fileNamePattern>
++      <maxFileSize>1GB</maxFileSize>
++      <maxHistory>15</maxHistory>
++      <totalSizeCap>10GB</totalSizeCap>
+     </rollingPolicy>
+     <encoder>
+       <pattern>%d{yyyy-MM-dd} %d{HH:mm:ss.SSS} [%26thread] %-5level %-38logger{36} - %msg%n</pattern>
+Index: keys/BDCustodioNew2/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/BDCustodioNew2/cl.xml b/keys/BDCustodioNew2/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180460)
++++ b/keys/BDCustodioNew2/cl.xml	(date 1698242180460)
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>B2177EE0EECD1EA41137EE97D5D44096</llave>
++</llaves3DES>
+Index: keys/ftpMainframe1/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/ftpMainframe1/cl.xml b/keys/ftpMainframe1/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180469)
++++ b/keys/ftpMainframe1/cl.xml	(date 1698242180469)
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>BA75C92B6940BA6944B69A6A45D3502C</llave>
++</llaves3DES>
+Index: keys/BDCustodioSic2/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/BDCustodioSic2/cl.xml b/keys/BDCustodioSic2/cl.xml
+new file mode 100644
+--- /dev/null	(date 1739552495954)
++++ b/keys/BDCustodioSic2/cl.xml	(date 1739552495954)
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>D560B24C0A53D1F19B8C9EF9160A6C4F</llave>
++</llaves3DES>
++
+Index: keys/BDCustodio1/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/BDCustodio1/cl.xml b/keys/BDCustodio1/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180456)
++++ b/keys/BDCustodio1/cl.xml	(date 1698242180456)
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>36AAF91FF031A50060A54777E8B5BCDB</llave>
++</llaves3DES>
++
+Index: keys/ftpClientAix2/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/ftpClientAix2/cl.xml b/keys/ftpClientAix2/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180468)
++++ b/keys/ftpClientAix2/cl.xml	(date 1698242180468)
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>D46CDCAE905AB4331422B50130EC7868</llave>
++</llaves3DES>
+Index: keys/SifBDCustodio2/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/SifBDCustodio2/cl.xml b/keys/SifBDCustodio2/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180466)
++++ b/keys/SifBDCustodio2/cl.xml	(date 1698242180466)
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>75B55E3A03C7BC446DCF5CA6C5821BCB</llave>
++</llaves3DES>
+Index: logs/receive-message-from-host-batch.log
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/logs/receive-message-from-host-batch.log b/logs/receive-message-from-host-batch.log
+new file mode 100644
+--- /dev/null	(date 1758053142979)
++++ b/logs/receive-message-from-host-batch.log	(date 1758053142979)
+@@ -0,0 +1,105 @@
++2025-09-16 16:05:31.885 [io.vertx.core.Launcher.main()] DEBUG io.vertx.core.logging.LoggerFactory    - Using io.vertx.core.logging.SLF4JLogDelegateFactory
++2025-09-16 16:05:32.002 [io.vertx.core.Launcher.main()] DEBUG i.n.u.i.l.InternalLoggerFactory        - Using SLF4J as the default logging framework
++2025-09-16 16:05:32.005 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent0   - -Dio.netty.noUnsafe: false
++2025-09-16 16:05:32.005 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent0   - Java version: 21
++2025-09-16 16:05:32.006 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent0   - sun.misc.Unsafe.theUnsafe: available
++2025-09-16 16:05:32.007 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent0   - sun.misc.Unsafe base methods: all available
++2025-09-16 16:05:32.008 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent0   - sun.misc.Unsafe.storeFence: available
++2025-09-16 16:05:32.008 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent0   - java.nio.Buffer.address: available
++2025-09-16 16:05:32.008 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent0   - direct buffer constructor: unavailable: Reflective setAccessible(true) disabled
++2025-09-16 16:05:32.010 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent0   - java.nio.Bits.unaligned: available, true
++2025-09-16 16:05:32.011 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent0   - jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable: class io.netty.util.internal.PlatformDependent0$7 cannot access class jdk.internal.misc.Unsafe (in module java.base) because module java.base does not export jdk.internal.misc to unnamed module @4714f698
++2025-09-16 16:05:32.014 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent0   - java.nio.DirectByteBuffer.<init>(long, {int,long}): unavailable
++2025-09-16 16:05:32.014 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent    - sun.misc.Unsafe: available
++2025-09-16 16:05:32.015 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent    - -Dio.netty.tmpdir: C:\Users\ct24504\AppData\Local\Temp (java.io.tmpdir)
++2025-09-16 16:05:32.015 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent    - -Dio.netty.bitMode: 64 (sun.arch.data.model)
++2025-09-16 16:05:32.015 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent    - Platform: Windows
++2025-09-16 16:05:32.016 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent    - -Dio.netty.maxDirectMemory: -1 bytes
++2025-09-16 16:05:32.016 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent    - -Dio.netty.uninitializedArrayAllocationThreshold: -1
++2025-09-16 16:05:32.034 [io.vertx.core.Launcher.main()] DEBUG io.netty.util.internal.CleanerJava9    - java.nio.ByteBuffer.cleaner(): available
++2025-09-16 16:05:32.035 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent    - -Dio.netty.noPreferDirect: false
++2025-09-16 16:05:32.061 [io.vertx.core.Launcher.main()] DEBUG io.netty.util.ResourceLeakDetector     - -Dio.netty.leakDetection.level: simple
++2025-09-16 16:05:32.062 [io.vertx.core.Launcher.main()] DEBUG io.netty.util.ResourceLeakDetector     - -Dio.netty.leakDetection.targetRecords: 4
++2025-09-16 16:05:32.095 [io.vertx.core.Launcher.main()] DEBUG i.n.c.MultithreadEventLoopGroup        - -Dio.netty.eventLoopThreads: 32
++2025-09-16 16:05:32.115 [io.vertx.core.Launcher.main()] DEBUG i.n.u.concurrent.GlobalEventExecutor   - -Dio.netty.globalEventExecutor.quietPeriodSeconds: 1
++2025-09-16 16:05:32.126 [io.vertx.core.Launcher.main()] DEBUG i.n.u.i.InternalThreadLocalMap         - -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
++2025-09-16 16:05:32.127 [io.vertx.core.Launcher.main()] DEBUG i.n.u.i.InternalThreadLocalMap         - -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
++2025-09-16 16:05:32.147 [io.vertx.core.Launcher.main()] DEBUG i.n.util.internal.PlatformDependent    - org.jctools-core.MpscChunkedArrayQueue: available
++2025-09-16 16:05:32.690 [io.vertx.core.Launcher.main()] DEBUG i.n.r.d.DefaultDnsServerAddressStreamProvider - Default DNS servers: [/180.183.194.194:53, /8.8.8.8:53, /8.8.4.4:53] (sun.net.dns.ResolverConfiguration)
++2025-09-16 16:05:32.707 [io.vertx.core.Launcher.main()] DEBUG io.netty.util.NetUtil                  - -Djava.net.preferIPv4Stack: false
++2025-09-16 16:05:32.707 [io.vertx.core.Launcher.main()] DEBUG io.netty.util.NetUtil                  - -Djava.net.preferIPv6Addresses: false
++2025-09-16 16:05:32.710 [io.vertx.core.Launcher.main()] DEBUG i.netty.util.NetUtilInitializations    - Loopback interface: loopback_0 (Software Loopback Interface 1, 0:0:0:0:0:0:0:1)
++2025-09-16 16:05:32.710 [io.vertx.core.Launcher.main()] DEBUG io.netty.util.NetUtil                  - Failed to get SOMAXCONN from sysctl and file \proc\sys\net\core\somaxconn. Default: 200
++2025-09-16 16:05:32.710 [io.vertx.core.Launcher.main()] DEBUG i.netty.resolver.dns.DnsNameResolver   - Default ResolvedAddressTypes: IPV4_ONLY
++2025-09-16 16:05:32.711 [io.vertx.core.Launcher.main()] DEBUG i.netty.resolver.dns.DnsNameResolver   - Localhost address: localhost/127.0.0.1
++2025-09-16 16:05:32.865 [io.vertx.core.Launcher.main()] DEBUG i.netty.resolver.dns.DnsNameResolver   - Windows hostname: F01_MZ1_JBSY8
++2025-09-16 16:05:32.865 [io.vertx.core.Launcher.main()] DEBUG i.netty.resolver.dns.DnsNameResolver   - Default search domains: []
++2025-09-16 16:05:32.868 [io.vertx.core.Launcher.main()] DEBUG i.netty.resolver.dns.DnsNameResolver   - Default UnixResolverOptions{ndots=1, timeout=5, attempts=16}
++2025-09-16 16:05:32.878 [io.vertx.core.Launcher.main()] DEBUG i.n.r.DefaultHostsFileEntriesResolver  - -Dio.netty.hostsFileRefreshInterval: 0
++2025-09-16 16:05:32.948 [ vert.x-eventloop-thread-1] INFO  c.g.messages.MainVerticle              - storeConfig
++2025-09-16 16:05:33.012 [vert.x-internal-blocking-0] DEBUG i.n.buffer.PooledByteBufAllocator      - -Dio.netty.allocator.numHeapArenas: 32
++2025-09-16 16:05:33.012 [vert.x-internal-blocking-0] DEBUG i.n.buffer.PooledByteBufAllocator      - -Dio.netty.allocator.numDirectArenas: 32
++2025-09-16 16:05:33.012 [vert.x-internal-blocking-0] DEBUG i.n.buffer.PooledByteBufAllocator      - -Dio.netty.allocator.pageSize: 8192
++2025-09-16 16:05:33.012 [vert.x-internal-blocking-0] DEBUG i.n.buffer.PooledByteBufAllocator      - -Dio.netty.allocator.maxOrder: 9
++2025-09-16 16:05:33.012 [vert.x-internal-blocking-0] DEBUG i.n.buffer.PooledByteBufAllocator      - -Dio.netty.allocator.chunkSize: 4194304
++2025-09-16 16:05:33.012 [vert.x-internal-blocking-0] DEBUG i.n.buffer.PooledByteBufAllocator      - -Dio.netty.allocator.smallCacheSize: 256
++2025-09-16 16:05:33.012 [vert.x-internal-blocking-0] DEBUG i.n.buffer.PooledByteBufAllocator      - -Dio.netty.allocator.normalCacheSize: 64
++2025-09-16 16:05:33.012 [vert.x-internal-blocking-0] DEBUG i.n.buffer.PooledByteBufAllocator      - -Dio.netty.allocator.maxCachedBufferCapacity: 32768
++2025-09-16 16:05:33.012 [vert.x-internal-blocking-0] DEBUG i.n.buffer.PooledByteBufAllocator      - -Dio.netty.allocator.cacheTrimInterval: 8192
++2025-09-16 16:05:33.012 [vert.x-internal-blocking-0] DEBUG i.n.buffer.PooledByteBufAllocator      - -Dio.netty.allocator.cacheTrimIntervalMillis: 0
++2025-09-16 16:05:33.013 [vert.x-internal-blocking-0] DEBUG i.n.buffer.PooledByteBufAllocator      - -Dio.netty.allocator.useCacheForAllThreads: false
++2025-09-16 16:05:33.013 [vert.x-internal-blocking-0] DEBUG i.n.buffer.PooledByteBufAllocator      - -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
++2025-09-16 16:05:33.035 [vert.x-internal-blocking-0] DEBUG io.netty.buffer.AbstractByteBuf        - -Dio.netty.buffer.checkAccessible: true
++2025-09-16 16:05:33.035 [vert.x-internal-blocking-0] DEBUG io.netty.buffer.AbstractByteBuf        - -Dio.netty.buffer.checkBounds: true
++2025-09-16 16:05:33.038 [vert.x-internal-blocking-0] DEBUG i.n.util.ResourceLeakDetectorFactory   - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@50d02f7f
++2025-09-16 16:05:33.054 [ vert.x-eventloop-thread-1] INFO  c.g.messages.MainVerticle              - deployOtherVerticles
++2025-09-16 16:05:33.055 [ vert.x-eventloop-thread-0] INFO  i.v.c.i.l.c.VertxIsolatedDeployer      - Succeeded in deploying verticle
++2025-09-16 16:05:33.055 [ vert.x-eventloop-thread-1] INFO  c.g.messages.MainVerticle              - Failed to open file configure
++2025-09-16 16:05:37.972 [ vert.x-eventloop-thread-1] ERROR i.v.config.impl.ConfigRetrieverImpl    - Error while scanning configuration
++io.vertx.core.file.FileSystemException: Unable to read file at path 'properties/sic/receive-message-from-host-batch.json'
++	at io.vertx.core.file.impl.FileSystemImpl$16.perform(FileSystemImpl.java:1070)
++	at io.vertx.core.file.impl.FileSystemImpl$16.perform(FileSystemImpl.java:1063)
++	at io.vertx.core.file.impl.FileSystemImpl$BlockingAction.handle(FileSystemImpl.java:1174)
++	at io.vertx.core.file.impl.FileSystemImpl$BlockingAction.handle(FileSystemImpl.java:1156)
++	at io.vertx.core.impl.ContextImpl.lambda$executeBlocking$1(ContextImpl.java:191)
++	at io.vertx.core.impl.ContextInternal.dispatch(ContextInternal.java:270)
++	at io.vertx.core.impl.ContextImpl.lambda$internalExecuteBlocking$2(ContextImpl.java:210)
++	at io.vertx.core.impl.TaskQueue.run(TaskQueue.java:76)
++	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
++	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
++	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
++	at java.base/java.lang.Thread.run(Thread.java:1583)
++Caused by: java.nio.file.NoSuchFileException: properties\sic\receive-message-from-host-batch.json
++	at java.base/sun.nio.fs.WindowsException.translateToIOException(WindowsException.java:85)
++	at java.base/sun.nio.fs.WindowsException.rethrowAsIOException(WindowsException.java:103)
++	at java.base/sun.nio.fs.WindowsException.rethrowAsIOException(WindowsException.java:108)
++	at java.base/sun.nio.fs.WindowsFileSystemProvider.newByteChannel(WindowsFileSystemProvider.java:234)
++	at java.base/java.nio.file.Files.newByteChannel(Files.java:380)
++	at java.base/java.nio.file.Files.newByteChannel(Files.java:432)
++	at java.base/java.nio.file.Files.readAllBytes(Files.java:3281)
++	at io.vertx.core.file.impl.FileSystemImpl$16.perform(FileSystemImpl.java:1067)
++	... 11 common frames omitted
++2025-09-16 16:05:42.978 [ vert.x-eventloop-thread-1] ERROR i.v.config.impl.ConfigRetrieverImpl    - Error while scanning configuration
++io.vertx.core.file.FileSystemException: Unable to read file at path 'properties/sic/receive-message-from-host-batch.json'
++	at io.vertx.core.file.impl.FileSystemImpl$16.perform(FileSystemImpl.java:1070)
++	at io.vertx.core.file.impl.FileSystemImpl$16.perform(FileSystemImpl.java:1063)
++	at io.vertx.core.file.impl.FileSystemImpl$BlockingAction.handle(FileSystemImpl.java:1174)
++	at io.vertx.core.file.impl.FileSystemImpl$BlockingAction.handle(FileSystemImpl.java:1156)
++	at io.vertx.core.impl.ContextImpl.lambda$executeBlocking$1(ContextImpl.java:191)
++	at io.vertx.core.impl.ContextInternal.dispatch(ContextInternal.java:270)
++	at io.vertx.core.impl.ContextImpl.lambda$internalExecuteBlocking$2(ContextImpl.java:210)
++	at io.vertx.core.impl.TaskQueue.run(TaskQueue.java:76)
++	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
++	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
++	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
++	at java.base/java.lang.Thread.run(Thread.java:1583)
++Caused by: java.nio.file.NoSuchFileException: properties\sic\receive-message-from-host-batch.json
++	at java.base/sun.nio.fs.WindowsException.translateToIOException(WindowsException.java:85)
++	at java.base/sun.nio.fs.WindowsException.rethrowAsIOException(WindowsException.java:103)
++	at java.base/sun.nio.fs.WindowsException.rethrowAsIOException(WindowsException.java:108)
++	at java.base/sun.nio.fs.WindowsFileSystemProvider.newByteChannel(WindowsFileSystemProvider.java:234)
++	at java.base/java.nio.file.Files.newByteChannel(Files.java:380)
++	at java.base/java.nio.file.Files.newByteChannel(Files.java:432)
++	at java.base/java.nio.file.Files.readAllBytes(Files.java:3281)
++	at io.vertx.core.file.impl.FileSystemImpl$16.perform(FileSystemImpl.java:1067)
++	... 11 common frames omitted
+Index: keys/BDCustodioNew1/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/BDCustodioNew1/cl.xml b/keys/BDCustodioNew1/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180458)
++++ b/keys/BDCustodioNew1/cl.xml	(date 1698242180458)
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>DBC01FB1124D36D9CE35F7FF1EA2260E</llave>
++</llaves3DES>
++
+Index: keys/Custodio2/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/Custodio2/cl.xml b/keys/Custodio2/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180465)
++++ b/keys/Custodio2/cl.xml	(date 1698242180465)
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>A7EF09C5D99EA0A8977DF9BD5D1BDE98</llave>
++</llaves3DES>
+Index: keys/sicFtpMainframe2/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/sicFtpMainframe2/cl.xml b/keys/sicFtpMainframe2/cl.xml
+new file mode 100644
+--- /dev/null	(date 1729250724167)
++++ b/keys/sicFtpMainframe2/cl.xml	(date 1729250724167)
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>A42692836C31D72C639F56FB58888732</llave>
++</llaves3DES>
+Index: keys/BusCustodio1/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/BusCustodio1/cl.xml b/keys/BusCustodio1/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180461)
++++ b/keys/BusCustodio1/cl.xml	(date 1698242180461)
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>36AAF91FF031A50060A54777E8B5BCDB</llave>
++</llaves3DES>
++
+Index: keys/Custodio1/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/Custodio1/cl.xml b/keys/Custodio1/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180464)
++++ b/keys/Custodio1/cl.xml	(date 1698242180464)
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>3C1743DEC5C5DA5A3E7E76EE14A882B5</llave>
++</llaves3DES>
++
+Index: keys/ftpclientkey2/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/ftpclientkey2/cl.xml b/keys/ftpclientkey2/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180470)
++++ b/keys/ftpclientkey2/cl.xml	(date 1698242180470)
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>A7EF09C5D99EA0A8977DF9BD5D1BDE98</llave>
++</llaves3DES>
+Index: keys/BDCustodioSic1/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/BDCustodioSic1/cl.xml b/keys/BDCustodioSic1/cl.xml
+new file mode 100644
+--- /dev/null	(date 1739552485270)
++++ b/keys/BDCustodioSic1/cl.xml	(date 1739552485270)
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>CDA99EA9DDE659AAF298A8DE7B63FE7A</llave>
++</llaves3DES>
++
+Index: keys/ftpClientAix1/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/ftpClientAix1/cl.xml b/keys/ftpClientAix1/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180467)
++++ b/keys/ftpClientAix1/cl.xml	(date 1698242180467)
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>5044FB4D6C7709EB5DC5B88E0956B70C</llave>
++</llaves3DES>
+Index: properties/sic/receive-message-from-host.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/properties/sic/receive-message-from-host.json b/properties/sic/receive-message-from-host-batch.json
+rename from properties/sic/receive-message-from-host.json
+rename to properties/sic/receive-message-from-host-batch.json
+--- a/properties/sic/receive-message-from-host.json	(revision 5b8430cac77ecc5cd22361dd102d3538bd5755ae)
++++ b/properties/sic/receive-message-from-host-batch.json	(date 1754508750181)
+@@ -3,12 +3,12 @@
+     "port": 8082
+   },
+   "scheduler": {
+-    "periodic": 1000
++    "periodic": 90000
+   },
+   "restart": {
+     "hour": 23,
+     "minute": 59,
+-    "second": 30
++    "second": 31
+   },
+   "db_domic": {
+     "host": "180.183.199.191",
+Index: keys/ClientCustodio2/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/ClientCustodio2/cl.xml b/keys/ClientCustodio2/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180464)
++++ b/keys/ClientCustodio2/cl.xml	(date 1698242180464)
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>798D4D5ABFAF74B8FE6A2808A3D92D18</llave>
++</llaves3DES>
+Index: keys/SifBDCustodio1/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/SifBDCustodio1/cl.xml b/keys/SifBDCustodio1/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180466)
++++ b/keys/SifBDCustodio1/cl.xml	(date 1698242180466)
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>E13ACCB8BC4682A5B8F4084784F79792</llave>
++</llaves3DES>
++
+Index: logs/receive-message-from-host.log
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/logs/receive-message-from-host.log b/logs/receive-message-from-host.log
+--- a/logs/receive-message-from-host.log	(revision 5b8430cac77ecc5cd22361dd102d3538bd5755ae)
++++ b/logs/receive-message-from-host.log	(date 1751556442369)
+@@ -1,0 +1,1 @@
++2025-07-03 11:27:19.127 [vertx-blocked-thread-checker] WARN  i.v.core.impl.BlockedThreadChecker     - Thread Thread[vert.x-eventloop-thread-20,5,io.vertx.core.Launcher] has been blocked for 2716 ms, time limit is 2000 ms
+Index: keys/ftpMainframe2/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/ftpMainframe2/cl.xml b/keys/ftpMainframe2/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180469)
++++ b/keys/ftpMainframe2/cl.xml	(date 1698242180469)
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>21811DBC041D0D03A3EA0F930E0B928D</llave>
++</llaves3DES>
+Index: keys/ftpclientkey1/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/ftpclientkey1/cl.xml b/keys/ftpclientkey1/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180470)
++++ b/keys/ftpclientkey1/cl.xml	(date 1698242180470)
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>3C1743DEC5C5DA5A3E7E76EE14A882B5</llave>
++</llaves3DES>
++
+Index: keys/BDCustodio2/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/BDCustodio2/cl.xml b/keys/BDCustodio2/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180457)
++++ b/keys/BDCustodio2/cl.xml	(date 1698242180457)
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>798D4D5ABFAF74B8FE6A2808A3D92D18</llave>
++</llaves3DES>
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"RemoteRepositoriesConfiguration\">\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"sonatype-oss-snapshots\" />\r\n      <option name=\"name\" value=\"Sonatype OSSRH Snapshots\" />\r\n      <option name=\"url\" value=\"https://s01.oss.sonatype.org/content/repositories/snapshots\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"Central Repository\" />\r\n      <option name=\"url\" value=\"https://repo.maven.apache.org/maven2\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"Maven Central repository\" />\r\n      <option name=\"url\" value=\"https://repo1.maven.org/maven2\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"jboss.community\" />\r\n      <option name=\"name\" value=\"JBoss Community repository\" />\r\n      <option name=\"url\" value=\"https://repository.jboss.org/nexus/content/repositories/public/\" />\r\n    </remote-repository>\r\n  </component>\r\n</project>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/jarRepositories.xml b/.idea/jarRepositories.xml
+--- a/.idea/jarRepositories.xml	(revision 5b8430cac77ecc5cd22361dd102d3538bd5755ae)
++++ b/.idea/jarRepositories.xml	(date 1747337790442)
+@@ -12,14 +12,29 @@
+       <option name="url" value="https://repo.maven.apache.org/maven2" />
+     </remote-repository>
+     <remote-repository>
++      <option name="id" value="spring-milestones" />
++      <option name="name" value="Spring Milestones" />
++      <option name="url" value="https://repo.spring.io/milestone" />
++    </remote-repository>
++    <remote-repository>
+       <option name="id" value="central" />
+       <option name="name" value="Maven Central repository" />
+       <option name="url" value="https://repo1.maven.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="spring-snapshots" />
++      <option name="name" value="Spring Snapshots" />
++      <option name="url" value="https://repo.spring.io/snapshot" />
+     </remote-repository>
+     <remote-repository>
+       <option name="id" value="jboss.community" />
+       <option name="name" value="JBoss Community repository" />
+       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+     </remote-repository>
++    <remote-repository>
++      <option name="id" value="lib" />
++      <option name="name" value="lib" />
++      <option name="url" value="file://$PROJECT_DIR$/../../../../../maven-repository" />
++    </remote-repository>
+   </component>
+-</project>
++</project>
+\ No newline at end of file
+Index: keys/BusCustodio2/cl.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keys/BusCustodio2/cl.xml b/keys/BusCustodio2/cl.xml
+new file mode 100644
+--- /dev/null	(date 1698242180462)
++++ b/keys/BusCustodio2/cl.xml	(date 1698242180462)
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<llaves3DES>
++  <llave>798D4D5ABFAF74B8FE6A2808A3D92D18</llave>
++</llaves3DES>
